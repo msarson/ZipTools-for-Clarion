@@ -1,0 +1,5 @@
+# Force CRLF line endings for Clarion source
+*.clw text eol=crlf
+*.inc text eol=crlf
+*.cwproj text eol=crlf
+*.sln text eol=crlf

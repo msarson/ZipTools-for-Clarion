@@ -1,0 +1,17 @@
+C110LOG.TXT
+/map
+/obj
+/Old
+/PDFs
+/extract
+/ZipFiles
+Cla*.dll
+*.LOG
+*.TPS
+*.Zip
+*.cache
+*.bpp
+*.shp
+ZipTest.*
+TestZip.*
+ZipClassTesting.exe
