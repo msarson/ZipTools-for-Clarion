@@ -169,6 +169,39 @@ This repository includes the required zLib DLL files:
 
 These DLLs were compiled from the latest zLib version and are ready to use with the library.
 
+## Installation and Usage
+
+### Project Configuration
+
+To use CZipClass in your Clarion application, you must define the following in your project file:
+
+```clarion
+_ZIPLinkMode_=>1
+_ZIPDllMode_=>0
+```
+
+- Set `_ZIPLinkMode_=>1` if the class should be linked into your project
+- Set `_ZIPDllMode_=>1` if the object is exported from another DLL
+
+### Using CZipClass in a Hand-Coded Project
+
+To add CZipClass to a hand-coded project (with no APP and hence no Global Extension template), do the following:
+
+1. Add this include statement to your main module:
+   ```clarion
+   include('CZipClass.Inc'),Once
+   ```
+
+2. Add the `_ZIPLinkMode_` and `_ZIPDllMode_` project defines to your project as described above.
+
+### Important Note About DLL Versions
+
+This library contains an updated version of zlib1.dll and zlibwapi.dll. Some third-party tools (like StringTheory) contain an earlier version of these DLLs in the clarion\accessories\bin directory. If you are adding this library to your application, be aware that the shipping DLLs may be overwritten by the older version when deploying your application.
+
+### Testing
+
+The repository includes a ZipClassTesting solution that can be used for testing the functionality of the library.
+
 ### Third-Party Tool Compatibility
 
 **Capesoft StringTheory**: Some third-party tools, specifically Capesoft StringTheory, ship with zLib version 1.2.8. The zLib library generally maintains good backward compatibility, so this version should be compatible with the core functionality used in this ZIP library. However:
