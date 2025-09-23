@@ -11,7 +11,7 @@ MyZip CZipClass
 FileQ ZipQ
 ZipOpts LIKE(ZipOptions)
 
-! Add files to queue
+! Add files to queue using file selection dialog
 IF MyZip.SelectFilesToZip(FileQ)
   ! Configure ZIP options
   ZipOpts.ZipName = 'C:\Output\MyArchive.zip'
@@ -22,6 +22,56 @@ IF MyZip.SelectFilesToZip(FileQ)
   ! Create ZIP file (progress window displays automatically)
   IF MyZip.CreateZipFile(FileQ, ZipOpts) = 0
     MESSAGE('ZIP file created successfully')
+  ELSE
+    MESSAGE('Error: ' & MyZip.GetErrorMessage())
+  END
+END
+```
+
+### Zipping a Folder
+
+```clarion
+MyZip CZipClass
+FileQ ZipQ
+ZipOpts LIKE(ZipOptions)
+
+! Add folder contents to queue using folder selection dialog
+! Second parameter (false) means don't include the base folder itself, just its contents
+IF MyZip.SelectFolderToZip(FileQ, FALSE)
+  ! Configure ZIP options
+  ZipOpts.ZipName = 'C:\Output\FolderContents.zip'
+  ZipOpts.ShowProgress = TRUE
+  ZipOpts.Threads = 8
+  ZipOpts.Overwrite = CZ_ZIP_OVERWRITE_ASK
+  
+  ! Create ZIP file (progress window displays automatically)
+  IF MyZip.CreateZipFile(FileQ, ZipOpts) = 0
+    MESSAGE('Folder contents zipped successfully')
+  ELSE
+    MESSAGE('Error: ' & MyZip.GetErrorMessage())
+  END
+END
+```
+
+### Zipping a Folder Including Base Directory
+
+```clarion
+MyZip CZipClass
+FileQ ZipQ
+ZipOpts LIKE(ZipOptions)
+
+! Add folder and all its contents to queue using folder selection dialog
+! Default or TRUE for second parameter includes the base folder in the zip
+IF MyZip.SelectFolderToZip(FileQ, TRUE)
+  ! Configure ZIP options
+  ZipOpts.ZipName = 'C:\Output\FolderWithContents.zip'
+  ZipOpts.ShowProgress = TRUE
+  ZipOpts.Threads = 8
+  ZipOpts.Overwrite = CZ_ZIP_OVERWRITE_ASK
+  
+  ! Create ZIP file (progress window displays automatically)
+  IF MyZip.CreateZipFile(FileQ, ZipOpts) = 0
+    MESSAGE('Folder with contents zipped successfully')
   ELSE
     MESSAGE('Error: ' & MyZip.GetErrorMessage())
   END
