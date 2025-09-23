@@ -1,4 +1,3 @@
-!ABCIncludeFile
 !=============================================================
 ! ZipReaderClass - Class for ZIP reading and extraction operations
 !

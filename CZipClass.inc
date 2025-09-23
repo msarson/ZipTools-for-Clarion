@@ -1,4 +1,3 @@
-!ABCIncludeFile
 !=============================================================
 ! CZipClass - Simplified zLib wrapper class
 !

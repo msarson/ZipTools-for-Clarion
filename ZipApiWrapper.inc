@@ -1,4 +1,3 @@
-!ABCIncludeFile
 !=============================================================
 ! ZipApiWrapper - DLL bindings for zLib and Windows API
 !
