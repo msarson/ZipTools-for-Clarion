@@ -163,3 +163,7 @@ The current implementation features a different architecture with:
 - Improved memory management
 
 If you're familiar with Marcelo's original work, you'll find this implementation takes a significantly different approach while addressing the same fundamental need for ZIP functionality in Clarion applications.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
