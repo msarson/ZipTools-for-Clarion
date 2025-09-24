@@ -64,4 +64,11 @@ REM Copy TPL file to Accessory\Template\win
 echo Copying TPL file to %TemplatePath%...
 copy /Y ZipTools.TPL "%TemplatePath%" > nul
 
+REM Remove old renamed files from previous versions
+echo Removing obsolete files from previous versions...
+if exist "%LibsrcPath%\CZipClass.inc" del /Q "%LibsrcPath%\CZipClass.inc" > nul
+if exist "%LibsrcPath%\CZipClass.clw" del /Q "%LibsrcPath%\CZipClass.clw" > nul
+if exist "%LibsrcPath%\FileUtilitiesClass.inc" del /Q "%LibsrcPath%\FileUtilitiesClass.inc" > nul
+if exist "%LibsrcPath%\FileUtilitiesClass.clw" del /Q "%LibsrcPath%\FileUtilitiesClass.clw" > nul
+
 echo Installation complete!

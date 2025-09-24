@@ -12,6 +12,9 @@ All notable changes to the ZipTools project will be documented in this file.
 - Renamed `UnzipFileInfo` → `UnzipFileInfoType` for consistency
 - Renamed `FileUtilitiesClass` → `ZipFileUtilitiesClass` for better naming consistency
 
+### Added
+- Enhanced InstallZipTools.bat script to automatically remove obsolete files from previous versions
+
 ## [1.1.0] - 2025-09-24
 
 ### Added
