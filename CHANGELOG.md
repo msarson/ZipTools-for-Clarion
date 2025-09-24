@@ -9,6 +9,7 @@ All notable changes to the CZipClass project will be documented in this file.
 - Renamed `ZipOptions` → `ZipOptionsType` for consistency
 - Renamed `UnzipOptions` → `UnzipOptionsType` for consistency
 - Renamed `UnzipFileInfo` → `UnzipFileInfoType` for consistency
+- Renamed `FileUtilitiesClass` → `ZipFileUtilitiesClass` for better naming consistency
 
 ## [1.1.0] - 2025-09-24
 

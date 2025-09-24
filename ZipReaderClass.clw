@@ -54,7 +54,7 @@ OutputDir         CSTRING(FILE:MaxFilePath+1)
 csZipName         CSTRING(FILE:MaxFilePath+1)
 TotalFiles        LONG
 CurrentFile       LONG
-FileUtility       FileUtilitiesClass
+FileUtility       ZipFileUtilitiesClass
 ClosingWindow     BYTE(0)
 FileInfo          LIKE(UnzipFileInfoType)
 FileOpened        BYTE(FALSE)

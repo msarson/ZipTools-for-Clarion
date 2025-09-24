@@ -27,7 +27,7 @@ WindowsZipTest    PROCEDURE
 
 
 ZipClass            CZipClass
-FileUtils           FileUtilitiesClass
+FileUtils           ZipFileUtilitiesClass
 QZipF               QUEUE(ZipQueueType).
 QDir                QUEUE(FILE:Queue),PRE(QDir).
 

@@ -17,7 +17,7 @@
     #FOR(%applicationTemplateInstance)
       #Context(%application,%applicationTemplateInstance)
         #insert(%ReadClassesPR,'CZipClass.inc',%pa,%force)
-        #insert(%ReadClassesPR,'FileUtilitiesClass.inc',%pa,%force)
+        #insert(%ReadClassesPR,'ZipFileUtilitiesClass.inc',%pa,%force)
         #insert(%ReadClassesPR,'ZipApiWrapper.inc',%pa,%force)
         #insert(%ReadClassesPR,'ZipErrorClass.inc',%pa,%force)
         #insert(%ReadClassesPR,'ZipReaderClass.inc',%pa,%force)
@@ -95,7 +95,7 @@ ___    ZLIB1.DLL
 
 #AT(%DllExportList),Where(%programExtension = 'DLL' and %RootDLL=1 and %MultiDll=1 and %NoGloZipTools=0)
 #insert(%ExportClassesPR,'CZipClass.inc')
-#insert(%ExportClassesPR,'FileUtilitiesClass.inc')
+#insert(%ExportClassesPR,'ZipFileUtilitiesClass.inc')
 #insert(%ExportClassesPR,'ZipApiWrapper.inc')
 #insert(%ExportClassesPR,'ZipErrorClass.inc')
 #insert(%ExportClassesPR,'ZipReaderClass.inc')

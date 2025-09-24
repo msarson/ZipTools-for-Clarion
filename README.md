@@ -169,7 +169,7 @@ UnzipOpts.ShowProgress = TRUE                  ! Whether to show progress window
 - [ZipReaderClass](docs/ZipReaderClass.md) - Manages ZIP file extraction
 - [ZipApiWrapper](docs/ZipApiWrapper.md) - Low-level wrapper for zLib functions
 - [ZipErrorClass](docs/ZipErrorClass.md) - Error handling functionality
-- [FileUtilitiesClass](docs/FileUtilitiesClass.md) - File system utilities
+- [ZipFileUtilitiesClass](docs/ZipFileUtilitiesClass.md) - File system utilities
 
 ## Dependencies
 

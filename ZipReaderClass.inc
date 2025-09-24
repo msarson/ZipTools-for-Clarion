@@ -11,7 +11,7 @@
     INCLUDE('ZipEquates.inc'),ONCE
     INCLUDE('ZipAPIWrapper.inc'),ONCE
     INCLUDE('ZipTypes.inc'),ONCE
-    INCLUDE('FileUtilitiesClass.inc'),ONCE
+    INCLUDE('ZipFileUtilitiesClass.inc'),ONCE
     INCLUDE('ZipErrorClass.inc'),ONCE
 
 !*************************************************************************

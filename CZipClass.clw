@@ -37,7 +37,7 @@ czDebugOn     EQUATE(1)
 !--------------------------------------------------------------------
 
 CZipClass.SelectFilesToZip    PROCEDURE(*ZipQueueType FileQueue)
-FileUtilities FileUtilitiesClass
+FileUtilities ZipFileUtilitiesClass
 
   CODE
   return FileUtilities.SelectFiles(FileQueue)
@@ -52,7 +52,7 @@ FileUtilities FileUtilitiesClass
 !   TRUE if a folder was selected, FALSE if cancelled
 !--------------------------------------------------------------------
 CZipClass.SelectFolderToZip   PROCEDURE(*ZipQueueType FileQueue, BYTE IncludeBaseFolder=true)
-FilesUtility FileUtilitiesClass
+FilesUtility ZipFileUtilitiesClass
   CODE
   Return FilesUtility.SelectZipFolder(FileQueue, IncludeBaseFolder,Self.BaseFolder)
 !--------------------------------------------------------------------
@@ -263,7 +263,7 @@ FileCount                   LONG
 MAX_THREADS                 EQUATE(8)
 UserResponse                LONG
 ZipPath                     CSTRING(FILE:MaxFileName + 1)
-FileUtility                 FileUtilitiesClass
+FileUtility                 ZipFileUtilitiesClass
 Window                      WINDOW('Zipping Files'),AT(,,218,72),CENTER,GRAY,FONT('Segoe UI',9)
                               PROGRESS,AT(13,21,187,24),USE(?PROGRESS1),RANGE(0,100)
                             END
@@ -672,7 +672,7 @@ FileSize                ULONG
 FileSizeHigh            ULONG
 czFileName              CSTRING(FILE:MaxFilePath+1)
 Err                     LONG
-FileUtility             FileUtilitiesClass
+FileUtility             ZipFileUtilitiesClass
 HasPassword             BYTE
 FileExt                 CSTRING(10)  ! For storing file extension
 
