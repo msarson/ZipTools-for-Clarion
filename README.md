@@ -2,6 +2,8 @@
 
 A high-performance ZIP library for Clarion applications that provides simple interfaces for creating, manipulating, and extracting ZIP files.
 
+> **Important:** The ZipTools template requires cape01.tpw and cape02.tpw files to be installed. These are available with any Capesoft product - their free GUTS or REFLECTION addons include these files. See the [Installation and Usage](#installation-and-usage) section for details.
+
 For a detailed list of changes and version history, see the [CHANGELOG](CHANGELOG.md).
 
 ## Quick Start
