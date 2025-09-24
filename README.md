@@ -17,7 +17,7 @@ For a detailed list of changes and version history, see the [CHANGELOG](CHANGELO
 ### Basic Zipping
 
 ```clarion
-MyZip CZipClass
+MyZip ZipToolsClass
 FileQ ZipQueueType
 ZipOpts LIKE(ZipOptionsType)
 
@@ -41,7 +41,7 @@ END
 ### Zipping a Folder
 
 ```clarion
-MyZip CZipClass
+MyZip ZipToolsClass
 FileQ ZipQueueType
 ZipOpts LIKE(ZipOptionsType)
 
@@ -66,7 +66,7 @@ END
 ### Zipping a Folder Including Base Directory
 
 ```clarion
-MyZip CZipClass
+MyZip ZipToolsClass
 FileQ ZipQueueType
 ZipOpts LIKE(ZipOptionsType)
 
@@ -91,7 +91,7 @@ END
 ### Basic Unzipping
 
 ```clarion
-MyZip CZipClass
+MyZip ZipToolsClass
 UnzipOpts LIKE(UnzipOptionsType)
 
 ! Configure unzip options
@@ -124,7 +124,7 @@ ZipOpts.Threads = 8                          ! Number of worker threads (default
 ZipOpts.Password = 'SecretPassword'          ! Optional password for encryption
 ZipOpts.Overwrite = CZ_ZIP_OVERWRITE_ASK     ! Overwrite behavior
 ZipOpts.ShowProgress = TRUE                  ! Whether to show progress window
-ZipOpts.Comment = 'Archive created by CZipClass'  ! Optional ZIP comment
+ZipOpts.Comment = 'Archive created by ZipToolsClass'  ! Optional ZIP comment
 ```
 
 **Overwrite Options:**
@@ -163,7 +163,7 @@ UnzipOpts.ShowProgress = TRUE                  ! Whether to show progress window
 
 ## Detailed Documentation
 
-- [CZipClass](docs/CZipClass.md) - Main class for ZIP operations
+- [ZipToolsClass](docs/ZipToolsClass.md) - Main class for ZIP operations
 - [ZipWorkerClass](docs/ZipWorkerClass.md) - Handles threading and worker operations
 - [ZipWriterClass](docs/ZipWriterClass.md) - Manages ZIP file creation
 - [ZipReaderClass](docs/ZipReaderClass.md) - Manages ZIP file extraction
@@ -208,7 +208,7 @@ The repository now includes a Clarion template (`ZipTools.tpl`) that makes it ea
 
 ### Manual Project Configuration
 
-To use CZipClass in your Clarion application without the template, you must define the following in your project file:
+To use ZipToolsClass in your Clarion application without the template, you must define the following in your project file:
 
 ```clarion
 _ZIPLinkMode_=>1
@@ -218,13 +218,13 @@ _ZIPDllMode_=>0
 - Set `_ZIPLinkMode_=>1` if the class should be linked into your project
 - Set `_ZIPDllMode_=>1` if the object is exported from another DLL
 
-### Using CZipClass in a Hand-Coded Project
+### Using ZipToolsClass in a Hand-Coded Project
 
-To add CZipClass to a hand-coded project (with no APP and hence no Global Extension template), do the following:
+To add ZipToolsClass to a hand-coded project (with no APP and hence no Global Extension template), do the following:
 
 1. Add this include statement to your main module:
    ```clarion
-   include('CZipClass.Inc'),Once
+   include('ZipToolsClass.Inc'),Once
    ```
 
 2. Add the `_ZIPLinkMode_` and `_ZIPDllMode_` project defines to your project as described above.
@@ -269,7 +269,7 @@ This project was inspired by work originally shared by Marcelo_Sanseau in the Cl
 
 https://clarionhub.com/t/zip-unzip-options-within-an-app/6805
 
-While Marcelo's ClarionZipClass provided the initial inspiration and shares the same class name (CZipClass), this library is actually a complete rewrite from the ground up rather than a modification of the original code.
+While Marcelo's ClarionZipClass provided the initial inspiration, this library is actually a complete rewrite from the ground up rather than a modification of the original code.
 
 The current implementation features a different architecture with:
 - Multi-threaded processing

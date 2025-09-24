@@ -12,7 +12,7 @@
           MAP
           END
   Include('ZipReaderClass.inc'),ONCE
-  INCLUDE('CZipClass.inc'),ONCE
+  INCLUDE('ZipToolsClass.inc'),ONCE
 
 !====================================================================
 czDebugOn     EQUATE(1)  ! Enable debug tracing to help diagnose issues

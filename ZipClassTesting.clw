@@ -8,7 +8,7 @@
 
 
 
-  INCLUDE('CZIPCLASS.INC'),ONCE
+  INCLUDE('ZipToolsClass.INC'),ONCE
   INCLUDE('KEYCODES.CLW'),ONCE
   
 
@@ -26,7 +26,7 @@ WindowsZipTest    PROCEDURE
 
 
 
-ZipClass            CZipClass
+ZipClass            ZipToolsClass
 FileUtils           ZipFileUtilitiesClass
 QZipF               QUEUE(ZipQueueType).
 QDir                QUEUE(FILE:Queue),PRE(QDir).

@@ -1,5 +1,5 @@
 !=============================================================
-! CZipClass - Simplified zLib wrapper class
+! ZipToolsClass - Simplified zLib wrapper class
 !
 ! This class provides a streamlined wrapper for the zlibwapi.dll functions
 ! to create, manipulate, and extract ZIP files with improved performance
@@ -19,9 +19,9 @@
 
 
 !*************************************************************************
-! CZipClass - Main class for ZIP operations
+! ZipToolsClass - Main class for ZIP operations
 !*************************************************************************
-CZipClass     CLASS,TYPE,THREAD,MODULE('CZipClass.clw'),LINK('CZipClass.clw',_ZIPLinkMode_),DLL(_ZIPDllMode_)
+ZipToolsClass     CLASS,TYPE,THREAD,MODULE('ZipToolsClass.clw'),LINK('ZipToolsClass.clw',_ZIPLinkMode_),DLL(_ZIPDllMode_)
 ZipApi          &ZipAPIWrapper  ! Reference to the ZIP API wrapper
 Writer          &ZipWriterClass ! Reference to the ZIP writer class
 Reader          &ZipReaderClass ! Reference to the ZIP reader class

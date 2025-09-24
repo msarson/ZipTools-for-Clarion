@@ -16,7 +16,7 @@
   #FOR(%applicationTemplate),Where(%applicationTemplate='Activate_ZipTools(ZipTools)')
     #FOR(%applicationTemplateInstance)
       #Context(%application,%applicationTemplateInstance)
-        #insert(%ReadClassesPR,'CZipClass.inc',%pa,%force)
+        #insert(%ReadClassesPR,'ZipToolsClass.inc',%pa,%force)
         #insert(%ReadClassesPR,'ZipFileUtilitiesClass.inc',%pa,%force)
         #insert(%ReadClassesPR,'ZipApiWrapper.inc',%pa,%force)
         #insert(%ReadClassesPR,'ZipErrorClass.inc',%pa,%force)
@@ -59,7 +59,7 @@
         #Prompt('This is part of a Multi-DLL program',Check),%MultiDLL,default(%ProgramExtension='DLL'),at(10)
         #Enable(%MultiDLL=1)
           #Enable(%ProgramExtension='DLL')
-            #Prompt('Export CZipClass from this DLL',Check),%RootDLL,at(10)
+            #Prompt('Export ZipToolsClass from this DLL',Check),%RootDLL,at(10)
           #EndEnable
         #EndEnable
       #EndBoxed
@@ -77,7 +77,7 @@ ___    ZLIB1.DLL
 #ENDAT
 #!-----------------------------------------------------------------------------!
 #AT(%AfterGlobalIncludes),where(%NoGloZipTools=0)
-  include('CZipClass.Inc'),ONCE
+  include('ZipToolsClass.Inc'),ONCE
   #INSERT(%IncludeAdditionalIncFiles)
 #ENDAT
 
@@ -94,7 +94,7 @@ ___    ZLIB1.DLL
 #ENDAt
 
 #AT(%DllExportList),Where(%programExtension = 'DLL' and %RootDLL=1 and %MultiDll=1 and %NoGloZipTools=0)
-#insert(%ExportClassesPR,'CZipClass.inc')
+#insert(%ExportClassesPR,'ZipToolsClass.inc')
 #insert(%ExportClassesPR,'ZipFileUtilitiesClass.inc')
 #insert(%ExportClassesPR,'ZipApiWrapper.inc')
 #insert(%ExportClassesPR,'ZipErrorClass.inc')
@@ -149,7 +149,7 @@ ZipTools:TemplateVersion equate('%ZipToolsTPLVersion')
       #Display()
       #boxed('Options'),section
         #PROMPT('Object Name:',@S255),%ZipObject,Req,default('ThisZip' & %ActiveTemplateInstance)
-        #prompt('Class Name:',@s255),%ZipClassName,req,default('CZipClass')
+        #prompt('Class Name:',@s255),%ZipClassName,req,default('ZipToolsClass')
       #ENDBOXED
     #endtab
   #EndSheet

@@ -475,7 +475,7 @@ END
 
 ## Usage Example
 
-This class is typically used internally by the higher-level classes (`CZipClass`, `ZipWriterClass`, and `ZipReaderClass`), but can be used directly for more advanced operations:
+This class is typically used internally by the higher-level classes (`ZipToolsClass`, `ZipWriterClass`, and `ZipReaderClass`), but can be used directly for more advanced operations:
 
 ```clarion
 MyZipApi ZipApiWrapper

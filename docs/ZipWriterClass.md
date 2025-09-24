@@ -135,7 +135,7 @@ ZipCompCap  ULONG   ! Capacity of compressed buffer
 
 ## Implementation Details
 
-The `ZipWriterClass` is designed to work with the `CZipClass` and `ZipWorkerClass` to enable efficient ZIP file creation. It implements:
+The `ZipWriterClass` is designed to work with the `ZipToolsClass` and `ZipWorkerClass` to enable efficient ZIP file creation. It implements:
 
 1. **File Reading**: Efficiently reads files into memory buffers
 2. **CRC Calculation**: Calculates CRC32 checksums for data integrity

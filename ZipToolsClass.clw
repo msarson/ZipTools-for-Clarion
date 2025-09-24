@@ -1,7 +1,8 @@
+
 !---------------------------------------------------------
-! CZipClass.clw
+! ZipToolsClass.clw
 !
-! Implementation of the CZipClass wrapper for zlibwapi.dll
+! Implementation of the ZipToolsClass wrapper for zlibwapi.dll
 ! Provides functionality for creating, manipulating, and extracting ZIP files
 ! using a multi-threaded approach for improved performance.
 !
@@ -22,7 +23,7 @@
 !====================================================================
 czDebugOn     EQUATE(1)
   INCLUDE('ZipApiWrapper.inc')
-  INCLUDE('CZipClass.inc'),ONCE
+  INCLUDE('ZipToolsClass.inc'),ONCE
   INCLUDE('SVAPI.inc'),ONCE
 
 
@@ -36,7 +37,7 @@ czDebugOn     EQUATE(1)
 !   TRUE if files were selected, FALSE if cancelled
 !--------------------------------------------------------------------
 
-CZipClass.SelectFilesToZip    PROCEDURE(*ZipQueueType FileQueue)
+ZipToolsClass.SelectFilesToZip    PROCEDURE(*ZipQueueType FileQueue)
 FileUtilities ZipFileUtilitiesClass
 
   CODE
@@ -51,7 +52,7 @@ FileUtilities ZipFileUtilitiesClass
 ! Returns:
 !   TRUE if a folder was selected, FALSE if cancelled
 !--------------------------------------------------------------------
-CZipClass.SelectFolderToZip   PROCEDURE(*ZipQueueType FileQueue, BYTE IncludeBaseFolder=true)
+ZipToolsClass.SelectFolderToZip   PROCEDURE(*ZipQueueType FileQueue, BYTE IncludeBaseFolder=true)
 FilesUtility ZipFileUtilitiesClass
   CODE
   Return FilesUtility.SelectZipFolder(FileQueue, IncludeBaseFolder,Self.BaseFolder)
@@ -66,7 +67,7 @@ FilesUtility ZipFileUtilitiesClass
 !
 ! This method delegates to the ZipErrorClass for centralized error handling
 !--------------------------------------------------------------------
-CZipClass.GetErrorMessage PROCEDURE(LONG zErrCode)
+ZipToolsClass.GetErrorMessage PROCEDURE(LONG zErrCode)
   CODE
   RETURN Self.Errors.GetErrorMessage(zErrCode)
 
@@ -78,7 +79,7 @@ CZipClass.GetErrorMessage PROCEDURE(LONG zErrCode)
 !
 ! This method delegates to the ZipErrorClass for centralized error handling
 !--------------------------------------------------------------------
-CZipClass.GetErrorCode    PROCEDURE()
+ZipToolsClass.GetErrorCode    PROCEDURE()
   CODE
   RETURN Self.Errors.GetErrorCode()
 
@@ -87,14 +88,14 @@ CZipClass.GetErrorCode    PROCEDURE()
 ! GetzError - Legacy method for backward compatibility
 ! Returns error message for the last error
 !--------------------------------------------------------------------
-CZipClass.GetzError   PROCEDURE()
+ZipToolsClass.GetzError   PROCEDURE()
   CODE
   RETURN Self.Errors.GetzError()
 
 !--------------------------------------------------------------------
 ! Construct - Class constructor, initializes default values
 !--------------------------------------------------------------------
-CZipClass.Construct   PROCEDURE()
+ZipToolsClass.Construct   PROCEDURE()
   CODE
   ! Initialize compression settings
   SELF.CompressionMethod = CZ_Z_DEFLATED
@@ -113,7 +114,7 @@ CZipClass.Construct   PROCEDURE()
 ! Parameters:
 !   pmsg - Message to output to debug console
 !--------------------------------------------------------------------
-CZipClass.Trace   PROCEDURE(STRING pmsg)
+ZipToolsClass.Trace   PROCEDURE(STRING pmsg)
 cmsg                CSTRING(LEN(CLIP(pmsg)) + 1)
   CODE
   COMPILE('TraceOn',czDebugOn=1); 
@@ -127,7 +128,7 @@ cmsg                CSTRING(LEN(CLIP(pmsg)) + 1)
   !--------------------------------------------------------------------
   ! Destruct - Class destructor, cleans up allocated resources
   !--------------------------------------------------------------------
-CZipClass.Destruct    PROCEDURE()
+ZipToolsClass.Destruct    PROCEDURE()
   CODE
   ! Clean up resources
   DISPOSE(SELF.ZipApi)
@@ -142,7 +143,7 @@ CZipClass.Destruct    PROCEDURE()
 ! without recreating the objects, allowing the class to be reused
 ! for multiple operations without memory leaks or state conflicts.
 !--------------------------------------------------------------------
-CZipClass.Reset    PROCEDURE()
+ZipToolsClass.Reset    PROCEDURE()
  CODE
  ! Ensure ThreadDataGroup is clean first
  DisposeAllThreadData()
@@ -195,7 +196,7 @@ CZipClass.Reset    PROCEDURE()
 ! Returns:
 !   0 on success, error code on failure
 !--------------------------------------------------------------------
-CZipClass.ExtractZipFile PROCEDURE(*UnzipOptionsType Options)
+ZipToolsClass.ExtractZipFile PROCEDURE(*UnzipOptionsType Options)
 Result                   LONG
   CODE
   ! Store options and delegate to the Reader class
@@ -215,7 +216,6 @@ Result                   LONG
   ! Return the error code from the error handler
   RETURN Self.Errors.GetErrorCode()
   
-
 
 
 
@@ -242,7 +242,7 @@ Result                   LONG
 ! Returns:
 !   0 on success, error count on failure
 !--------------------------------------------------------------------
-CZipClass.CreateZipFile   PROCEDURE(*ZipQueueType FileQueue, *ZipOptionsType Options)
+ZipToolsClass.CreateZipFile   PROCEDURE(*ZipQueueType FileQueue, *ZipOptionsType Options)
 i                           LONG
 FilesPerThread              LONG
 ErrorCount                  LONG
@@ -313,8 +313,8 @@ TotalFileSize               ULONG
     OF CZ_ZIP_OVERWRITE_SILENT   ! Overwrite silently
       Self.Trace('CreateZipFile: Overwrite=2 ? Overwriting silently') 
 
-    OF CZ_ZIP_OVERWRITE_APPEND   ! Append mode � left for later implementation
-      Self.Trace('CreateZipFile: Overwrite=3 (Append) � not implemented yet') 
+    OF CZ_ZIP_OVERWRITE_APPEND   ! Append mode  left for later implementation
+      Self.Trace('CreateZipFile: Overwrite=3 (Append)  not implemented yet') 
       ! TODO: implement append if needed
     END
   END
@@ -486,7 +486,7 @@ TotalFileSize               ULONG
 ! Returns:
 !   Number of files added
 !--------------------------------------------------------------------
-CZipClass.AddFilesToThreadQueue   PROCEDURE(*ZipWorkerClass ThreadData, *ZipQueueType FileQueue, LONG StartIdx, LONG EndIdx)
+ZipToolsClass.AddFilesToThreadQueue   PROCEDURE(*ZipWorkerClass ThreadData, *ZipQueueType FileQueue, LONG StartIdx, LONG EndIdx)
 i                                   LONG
 FilesAdded                          LONG
   CODE
@@ -548,7 +548,7 @@ FilesAdded                          LONG
 ! Returns:
 !   Number of files added
 !--------------------------------------------------------------------
-CZipClass.AddFilesToThreadQueueBySize PROCEDURE(*ZipWorkerClass ThreadData, *ZipQueueType FileQueue, LONG ThreadNum, LONG ThreadCount, ULONG TotalFileSize)
+ZipToolsClass.AddFilesToThreadQueueBySize PROCEDURE(*ZipWorkerClass ThreadData, *ZipQueueType FileQueue, LONG ThreadNum, LONG ThreadCount, ULONG TotalFileSize)
 i                                   LONG
 j                                   LONG
 FilesAdded                          LONG

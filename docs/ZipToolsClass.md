@@ -1,6 +1,6 @@
-# CZipClass Documentation
+# ZipToolsClass Documentation
 
-`CZipClass` is the main class for ZIP operations in this library. It provides high-level methods for creating and extracting ZIP files, with support for password protection, progress reporting, and multi-threading. The implementation uses an adaptive compression strategy that automatically selects the optimal compression method and level based on file type and size.
+`ZipToolsClass` is the main class for ZIP operations in this library. It provides high-level methods for creating and extracting ZIP files, with support for password protection, progress reporting, and multi-threading. The implementation uses an adaptive compression strategy that automatically selects the optimal compression method and level based on file type and size.
 
 ## Class Methods
 
@@ -163,7 +163,7 @@ The class uses an adaptive compression strategy that automatically selects the o
 ### Creating a ZIP File
 
 ```clarion
-MyZip CZipClass
+MyZip ZipToolsClass
 FileQ ZipQueueType
 ZipOpts LIKE(ZipOptionsType)
 
@@ -187,7 +187,7 @@ END
 ### Creating a Password-Protected ZIP File
 
 ```clarion
-MyZip CZipClass
+MyZip ZipToolsClass
 FileQ ZipQueueType
 ZipOpts LIKE(ZipOptionsType)
 
@@ -212,7 +212,7 @@ END
 ### Getting ZIP File Information
 
 ```clarion
-MyZip CZipClass
+MyZip ZipToolsClass
 ZipFile STRING(260)
 ContentsQ ZipQueueType
 FileCount LONG

@@ -127,7 +127,7 @@ Overwrite options:
 ### Extracting All Files from a ZIP
 
 ```clarion
-MyZip CZipClass
+MyZip ZipToolsClass
 UnzipOpts UnzipOptionsType
 Result LONG
 
@@ -149,7 +149,7 @@ END
 ### Extracting a Password-Protected ZIP
 
 ```clarion
-MyZip CZipClass
+MyZip ZipToolsClass
 UnzipOpts UnzipOptionsType
 Result LONG
 
@@ -172,7 +172,7 @@ END
 ### Listing ZIP Contents
 
 ```clarion
-MyZip CZipClass
+MyZip ZipToolsClass
 ZipFile STRING(260)
 ContentsQ ZipQueueType
 
@@ -198,7 +198,7 @@ END
 
 ## Implementation Details
 
-The `ZipReaderClass` is designed to work with the `CZipClass` to provide ZIP file extraction functionality. Key features include:
+The `ZipReaderClass` is designed to work with the `ZipToolsClass` to provide ZIP file extraction functionality. Key features include:
 
 1. **Password Support**: Handles encrypted ZIP files with password protection
 2. **Configurable Overwrite Behavior**: Controls how existing files are handled during extraction

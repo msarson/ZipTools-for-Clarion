@@ -121,7 +121,7 @@ Debug messages include:
 ### Basic Error Handling
 
 ```clarion
-MyZip CZipClass
+MyZip ZipToolsClass
 Result LONG
 
 ! Create a ZIP file
@@ -153,7 +153,7 @@ MESSAGE('Error ' & ErrorCode & ': ' & ErrorMessage)
 ### Using Legacy Error Handling
 
 ```clarion
-MyZip CZipClass
+MyZip ZipToolsClass
 ErrorMessage STRING(260)
 
 ! Perform an operation that might fail
@@ -170,7 +170,7 @@ END
 
 The `ZipErrorClass` is used by all other classes in the ZIP library to centralize error handling:
 
-- `CZipClass` delegates error handling to ZipErrorClass
+- `ZipToolsClass` delegates error handling to ZipErrorClass
 - `ZipWorkerClass` uses ZipErrorClass for thread-specific errors
 - `ZipReaderClass` uses ZipErrorClass for extraction errors
 - `ZipWriterClass` uses ZipErrorClass for compression errors
@@ -179,15 +179,15 @@ The `ZipErrorClass` is used by all other classes in the ZIP library to centraliz
 This centralized approach ensures consistent error reporting and handling throughout the library.
 
 ```clarion
-! Example of error delegation in CZipClass
-CZipClass.GetErrorMessage PROCEDURE(LONG zErrCode)
+! Example of error delegation in ZipToolsClass
+ZipToolsClass.GetErrorMessage PROCEDURE(LONG zErrCode)
   CODE
   RETURN Self.Errors.GetErrorMessage(zErrCode)
 
-CZipClass.GetErrorCode PROCEDURE()
+ZipToolsClass.GetErrorCode PROCEDURE()
   CODE
   RETURN Self.Errors.GetErrorCode()
 
-CZipClass.GetzError PROCEDURE()
+ZipToolsClass.GetzError PROCEDURE()
   CODE
   RETURN Self.Errors.GetzError()

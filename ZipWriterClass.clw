@@ -11,7 +11,7 @@
           MAP
           END
   Include('ZipWriterClass.inc'),ONCE
-  INCLUDE('CZipClass.inc'),ONCE
+  INCLUDE('ZipToolsClass.inc'),ONCE
 
 !====================================================================
 czDebugOn     EQUATE(1)

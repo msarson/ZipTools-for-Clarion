@@ -43,7 +43,7 @@ Kill()
 Initializes thread data for parallel processing.
 
 ```clarion
-InitThreadData(LONG ZipHandle, *IMutex ZipMutex, *ZipQueueType FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *CZipClass zipBase, <ULONG TotalFileSize>)
+InitThreadData(LONG ZipHandle, *IMutex ZipMutex, *ZipQueueType FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *ZipToolsClass zipBase, <ULONG TotalFileSize>)
 ```
 
 **Parameters:**
@@ -53,7 +53,7 @@ InitThreadData(LONG ZipHandle, *IMutex ZipMutex, *ZipQueueType FileQueue, LONG T
 - `ThreadNum`: Thread number (1-based)
 - `FilesPerThread`: Number of files per thread (for count-based distribution)
 - `ThreadCount`: Total number of threads
-- `zipBase`: Reference to the parent CZipClass
+- `zipBase`: Reference to the parent ZipToolsClass
 - `TotalFileSize` (optional): Total size of all files (for size-based distribution)
 
 **Note:** This method distributes files to be processed either by count (equal number of files per thread) or by size (equal amount of data per thread) depending on whether TotalFileSize is provided.
@@ -147,7 +147,7 @@ The following notification codes are used for thread communication:
 
 ## Implementation Details
 
-The `ZipWorkerClass` is designed to work with the `CZipClass` to enable multi-threaded ZIP file creation. Each worker thread:
+The `ZipWorkerClass` is designed to work with the `ZipToolsClass` to enable multi-threaded ZIP file creation. Each worker thread:
 
 1. Receives a subset of files to process
 2. Reads and compresses each file

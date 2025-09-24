@@ -3,7 +3,7 @@
         MAP
         END
   Include('ZipWorkerClass.inc'),ONCE
-  INCLUDE('CZipClass.inc'),ONCE
+  INCLUDE('ZipToolsClass.inc'),ONCE
 !--------------------------------------------------------------------
 ! ZipWorkerClass methods
 !
@@ -73,7 +73,7 @@ ZipWorkerClass.Kill  PROCEDURE()
   FREE(SELF.SourceQueue)
   SELF.SourceQueue &= NULL
 
-ZipWorkerClass.Init  PROCEDURE(LONG pStartIdx, LONG pEndIdx, *ZipQueueType pSourceQueue, LONG pZipHandle, LONG ShowProgress, *IMutex pZipMutex, LONG pThreadNum, *CZipClass pZipClass)
+ZipWorkerClass.Init  PROCEDURE(LONG pStartIdx, LONG pEndIdx, *ZipQueueType pSourceQueue, LONG pZipHandle, LONG ShowProgress, *IMutex pZipMutex, LONG pThreadNum, *ZipToolsClass pZipClass)
   CODE
   
   ! Store parameters
@@ -160,14 +160,14 @@ FilesAdded                      LONG
 !   ThreadNum - Thread number (1-based)
 !   FilesPerThread - Number of files per thread (for count-based distribution)
 !   ThreadCount - Total number of threads
-!   ZipBase - Reference to the parent CZipClass
+!   ZipBase - Reference to the parent ZipToolsClass
 !   TotalFileSize - Optional total size of all files (for size-based distribution)
 !
 ! This method initializes the thread data and distributes files to be processed
 ! either by count (equal number of files per thread) or by size (equal amount
 ! of data per thread) depending on whether TotalFileSize is provided.
 !--------------------------------------------------------------------
-ZipWorkerClass.InitThreadData  PROCEDURE(LONG ZipHandle, *IMutex ZipMutex, *ZipQueueType FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *CZipClass ZipBase, <ULONG TotalFileSize>)
+ZipWorkerClass.InitThreadData  PROCEDURE(LONG ZipHandle, *IMutex ZipMutex, *ZipQueueType FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *ZipToolsClass ZipBase, <ULONG TotalFileSize>)
 startIdx                    LONG
 endIdx                      LONG
 FilesAdded                  LONG
@@ -249,7 +249,7 @@ TargetSize ULONG             ! Target size for this thread
     BytesPerThread = TotalFileSize / ThreadCount
     Self.Trace('InitThreadData: Size-based distribution. Total bytes: ' & TotalFileSize & ', Target per thread: ' & BytesPerThread)
     
-    ! Let the CZipClass handle the size-based distribution
+    ! Let the ZipToolsClass handle the size-based distribution
     FilesAdded = ZipBase.AddFilesToThreadQueueBySize(Self, FileQueue, ThreadNum, ThreadCount, TotalFileSize)
   END
    

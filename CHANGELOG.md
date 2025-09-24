@@ -1,10 +1,11 @@
 # Changelog
 
-All notable changes to the CZipClass project will be documented in this file.
+All notable changes to the ZipTools project will be documented in this file.
 
 ## [1.2.0] - Unreleased
 
 ### ⚠️ Breaking Changes ⚠️
+- Renamed `CZipClass` → `ZipToolsClass` for better naming consistency with library
 - Renamed `ZipQ` → `ZipQueueType` for better type clarity
 - Renamed `ZipOptions` → `ZipOptionsType` for consistency
 - Renamed `UnzipOptions` → `UnzipOptionsType` for consistency

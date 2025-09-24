@@ -24,7 +24,6 @@ ErrorCount          LONG        ! Number of errors encountered
 CallerThread        LONG        ! Thread ID of the caller
 ThreadNumber        LONG        ! Thread number (1-8) for identification
 ZipMutex            &IMutex     ! Mutex for ZIP file access
-! Reference to parent CZipClass is no longer needed - worker is self-contained
 FileQueue           &ZipQueueType       ! Reference to the file queue
 StartTime           LONG        ! Thread start time (for timing measurements)
 EndTime             LONG        ! Thread end time (for timing measurements)
@@ -43,9 +42,9 @@ Options         LIKE(ZipOptionsType)
 Construct           PROCEDURE()
 Destruct            PROCEDURE()
 ! Legacy initialization method - replaced by InitThreadData
-Init                PROCEDURE(LONG pStartIdx, LONG pEndIdx, *ZipQueueType pSourceQueue, LONG pZipHandle, LONG ShowProgress, *IMutex pZipMutex, LONG pThreadNum, *CZipClass pZipClass)
+Init                PROCEDURE(LONG pStartIdx, LONG pEndIdx, *ZipQueueType pSourceQueue, LONG pZipHandle, LONG ShowProgress, *IMutex pZipMutex, LONG pThreadNum, *ZipToolsClass pZipClass)
 ! Modern initialization method with improved workload distribution
-InitThreadData      PROCEDURE(LONG ZipHandle, *IMutex ZipMutex, *ZipQueueType FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *CZipClass zipBase, <ULONG TotalFileSize>),PROC
+InitThreadData      PROCEDURE(LONG ZipHandle, *IMutex ZipMutex, *ZipQueueType FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *ZipToolsClass zipBase, <ULONG TotalFileSize>),PROC
 BuildQueue          PROCEDURE(),LONG,PROC
 Kill                PROCEDURE()
 ! Debug and error handling
