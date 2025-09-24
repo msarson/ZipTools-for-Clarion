@@ -44,8 +44,8 @@ Destruct            PROCEDURE()
 ! Legacy initialization method - replaced by InitThreadData
 Init                PROCEDURE(LONG pStartIdx, LONG pEndIdx, *ZipQueueType pSourceQueue, LONG pZipHandle, LONG ShowProgress, *IMutex pZipMutex, LONG pThreadNum, *ZipToolsClass pZipClass)
 ! Modern initialization method with improved workload distribution
-InitThreadData      PROCEDURE(LONG ZipHandle, *IMutex ZipMutex, *ZipQueueType FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *ZipToolsClass zipBase, <ULONG TotalFileSize>),PROC
-BuildQueue          PROCEDURE(),LONG,PROC
+InitThreadData      PROCEDURE(LONG ZipHandle, *IMutex ZipMutex, *ZipQueueType FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *ZipToolsClass zipBase, <ULONG TotalFileSize>),PROC,VIRTUAL
+BuildQueue          PROCEDURE(),LONG,PROC,VIRTUAL
 Kill                PROCEDURE()
 ! Debug and error handling
 Trace                   PROCEDURE(STRING Message)

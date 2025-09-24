@@ -29,11 +29,11 @@ Destruct         PROCEDURE()
 
 ! Core compression and writing methods
 ! Core file operations
-CompressFileToBuffer    PROCEDURE(*CSTRING FileName, *ULONG OutUncSize, *ULONG OutCrc, *ULONG OutCompSize),LONG
-ReadFileToBuffer        PROCEDURE(STRING FileName, *STRING BufRef, ULONG MaxSize, *ULONG OutSize, *ULONG OutCrc),LONG
+CompressFileToBuffer    PROCEDURE(*CSTRING FileName, *ULONG OutUncSize, *ULONG OutCrc, *ULONG OutCompSize),LONG,VIRTUAL
+ReadFileToBuffer        PROCEDURE(STRING FileName, *STRING BufRef, ULONG MaxSize, *ULONG OutSize, *ULONG OutCrc),LONG,VIRTUAL
 
 ! ZIP entry operations
-WritePrecompressedToZip PROCEDURE(LONG ZipHandle, *CSTRING ZipEntryName, zip_fileinfo_s zipfi, LONG pCompBuf, ULONG CompSize, ULONG UncSize, ULONG Crc, *IMutex ZipMutex, BYTE UseStoreMethod, <*CSTRING OriginalFilePath>),LONG
+WritePrecompressedToZip PROCEDURE(LONG ZipHandle, *CSTRING ZipEntryName, zip_fileinfo_s zipfi, LONG pCompBuf, ULONG CompSize, ULONG UncSize, ULONG Crc, *IMutex ZipMutex, BYTE UseStoreMethod, <*CSTRING OriginalFilePath>),LONG,VIRTUAL
 
 ! Utility methods
 DumpHex  PROCEDURE(LONG pBuffer, LONG pLen),STRING

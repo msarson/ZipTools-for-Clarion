@@ -21,9 +21,9 @@ zErrCode        LONG              ! Last error code
 ! SetError        PROCEDURE(LONG Code)
 
 ! Current error handling methods
-SetError        PROCEDURE(STRING Prefix,LONG Code)  ! Set error with context prefix
+SetError        PROCEDURE(STRING Prefix,LONG Code),VIRTUAL  ! Set error with context prefix
 GetErrorCode    PROCEDURE(),LONG                    ! Get current error code
-GetErrorMessage PROCEDURE(<LONG Code>),STRING       ! Get message for error code
+GetErrorMessage PROCEDURE(<LONG Code>),STRING,VIRTUAL       ! Get message for error code
 GetzError       PROCEDURE(),STRING                  ! Legacy error method for compatibility
 TraceError      PROCEDURE(<String prefix>),PRIVATE  ! Internal error tracing
                END

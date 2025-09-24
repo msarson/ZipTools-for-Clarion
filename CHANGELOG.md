@@ -2,6 +2,21 @@
 
 All notable changes to the ZipTools project will be documented in this file.
 
+## [1.3.0]
+
+### Changed
+- Added ,VIRTUAL to key methods across the codebase to improve extensibility:
+  - ZipToolsClass: SelectFilesToZip, SelectFolderToZip, ExtractZipFile, CreateZipFile
+  - ZipErrorClass: SetError, GetErrorMessage
+  - ZipFileUtilitiesClass: CreateDirectoriesFromPath, SelectFiles, SelectZipFolder, SelectFolder, SelectFile
+  - ZipReaderClass: ExtractZipFile, GetZipContents
+  - ZipWriterClass: CompressFileToBuffer, ReadFileToBuffer, WritePrecompressedToZip
+  - ZipWorkerClass: InitThreadData, BuildQueue
+
+### Improved
+- Enhanced inheritance support by marking key extension points as virtual
+- Better support for derived classes to customize behavior without rewriting entire classes
+
 ## [1.2.0] - 2025-09-24
 
 ### ⚠️ Breaking Changes ⚠️

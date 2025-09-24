@@ -28,10 +28,10 @@ Destruct         PROCEDURE()
 
 ! Core extraction and reading methods
 ! Extraction operations
-ExtractZipFile   PROCEDURE(*UnzipOptionsType Options),LONG  ! Extract all files from a ZIP
+ExtractZipFile   PROCEDURE(*UnzipOptionsType Options),LONG,VIRTUAL  ! Extract all files from a ZIP
 
 ! ZIP information methods
-GetZipContents   PROCEDURE(*STRING ZipFileName, *ZipQueueType ContentsQueue),BOOL  ! Get list of files in ZIP
+GetZipContents   PROCEDURE(*STRING ZipFileName, *ZipQueueType ContentsQueue),BOOL,VIRTUAL  ! Get list of files in ZIP
 GetZipFileCount  PROCEDURE(*STRING ZipFileName),LONG  ! Get number of files in ZIP
 GetZipTotalSize  PROCEDURE(*STRING ZipFileName),LONG  ! Get total uncompressed size of ZIP contents
 

@@ -7,14 +7,14 @@ ZipApi          &ZipAPIWrapper  ! Reference to the ZIP API wrapper
 !------------------------
 CONSTRUCT      PROCEDURE()
 DESTRUCT       PROCEDURE()
-CreateDirectoriesFromPath   PROCEDURE(STRING DirectoryPath),PROC,BOOL
+CreateDirectoriesFromPath   PROCEDURE(STRING DirectoryPath),PROC,BOOL,VIRTUAL
 FileNameOnly    PROCEDURE(<STRING fPath>),STRING
 GetFileExtension   PROCEDURE(STRING FileName),STRING
 PathOnly        PROCEDURE(<STRING fPath>),STRING
-SelectFiles    PROCEDURE(*ZipQueueType FileQueue),BOOL
-SelectZipFolder   PROCEDURE(*ZipQueueType FileQueue, BYTE IncludeBaseFolder=TRUE, *CSTRING BaseFolder),BOOL
-SelectFolder    PROCEDURE(String Title, String FileTypeSelection),STRING
-SelectFile     PROCEDURE(String Title, String FileTypeSelection),STRING
+SelectFiles    PROCEDURE(*ZipQueueType FileQueue),BOOL,VIRTUAL
+SelectZipFolder   PROCEDURE(*ZipQueueType FileQueue, BYTE IncludeBaseFolder=TRUE, *CSTRING BaseFolder),BOOL,VIRTUAL
+SelectFolder    PROCEDURE(String Title, String FileTypeSelection),STRING,VIRTUAL
+SelectFile     PROCEDURE(String Title, String FileTypeSelection),STRING,VIRTUAL
 ScanFolderRecursively   PROCEDURE(*CSTRING FolderPath, *ZipQueueType FileQueue, <*CSTRING BasePath>, *CSTRING BaseFolder),LONG,PROC,PRIVATE
    END
 

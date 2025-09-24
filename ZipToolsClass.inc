@@ -63,12 +63,12 @@ AddFilesToThreadQueue   PROCEDURE(*ZipWorkerClass ThreadData, *ZipQueueType File
 AddFilesToThreadQueueBySize PROCEDURE(*ZipWorkerClass ThreadData, *ZipQueueType FileQueue, LONG ThreadNum, LONG ThreadCount, ULONG TotalFileSize),LONG,PROC
 ! Select files to add to a ZIP (without embedded window code)
 ! Returns TRUE if files were selected, FALSE if cancelled
-SelectFilesToZip    PROCEDURE(*ZipQueueType FileQueue),BOOL
+SelectFilesToZip    PROCEDURE(*ZipQueueType FileQueue),BOOL,VIRTUAL
 
 ! Select a folder to add to a ZIP (without embedded window code)
 ! Returns TRUE if a folder was selected, FALSE if cancelled
 ! IncludeBaseFolder: TRUE to include the folder itself in the zip, FALSE to make folder contents the root
-SelectFolderToZip   PROCEDURE(*ZipQueueType FileQueue, BYTE IncludeBaseFolder=TRUE),BOOL
+SelectFolderToZip   PROCEDURE(*ZipQueueType FileQueue, BYTE IncludeBaseFolder=TRUE),BOOL,VIRTUAL
 
 
 ! Get error message for the last error code (delegates to Errors)
@@ -82,8 +82,8 @@ GetErrorCode    PROCEDURE(),LONG
 
 ! Write a debug message to the debug output
 Trace           PROCEDURE(STRING Message)
-ExtractZipFile  PROCEDURE(*UnzipOptionsType Options),LONG
-CreateZipFile   PROCEDURE(*ZipQueueType FileQueue, *ZipOptionsType Options),LONG
+ExtractZipFile  PROCEDURE(*UnzipOptionsType Options),LONG,VIRTUAL
+CreateZipFile   PROCEDURE(*ZipQueueType FileQueue, *ZipOptionsType Options),LONG,VIRTUAL
 Reset           PROCEDURE()
               END
 
