@@ -2,7 +2,7 @@
 
 All notable changes to the ZipTools project will be documented in this file.
 
-## [1.3.0]
+## [1.3.0] - 2025-09-24
 
 ### Changed
 - Added ,VIRTUAL to key methods across the codebase to improve extensibility:
@@ -12,8 +12,20 @@ All notable changes to the ZipTools project will be documented in this file.
   - ZipReaderClass: ExtractZipFile, GetZipContents
   - ZipWriterClass: CompressFileToBuffer, ReadFileToBuffer, WritePrecompressedToZip
   - ZipWorkerClass: InitThreadData, BuildQueue
-
-### Improved
+  
+  ### Added
+  - GitHub contribution templates:
+    - Bug report issue template
+    - Feature request issue template
+    - Pull request template
+  - Comprehensive CONTRIBUTING.md guide with:
+    - Repository setup instructions
+    - Clarion environment setup
+    - Coding standards and conventions
+    - Testing procedures
+    - Contribution workflow
+  
+  ### Improved
 - Enhanced inheritance support by marking key extension points as virtual
 - Better support for derived classes to customize behavior without rewriting entire classes
 
