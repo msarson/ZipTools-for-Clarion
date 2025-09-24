@@ -2,7 +2,7 @@
 [![Last Commit](https://img.shields.io/github/last-commit/msarson/ZipTools-for-Clarion)](https://github.com/msarson/ZipTools-for-Clarion/commits/master)
 [![Issues](https://img.shields.io/github/issues/msarson/ZipTools-for-Clarion)](https://github.com/msarson/ZipTools-for-Clarion/issues)
 [![Stars](https://img.shields.io/github/stars/msarson/ZipTools-for-Clarion?style=social)](https://github.com/msarson/ZipTools-for-Clarion/stargazers)
-# ZipTools-for-Clarion Optimized ZIP Library for Clarion 🗜️
+# ZipTools-for-Clarion Optimized ZIP Library🗜️
 
 Modern ZIP/UNZIP for Clarion: multi-threaded, password support, progress reporting.
 
