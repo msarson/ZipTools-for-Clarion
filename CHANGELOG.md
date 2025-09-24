@@ -4,11 +4,11 @@ All notable changes to the CZipClass project will be documented in this file.
 
 ## [1.2.0] - Unreleased
 
-### Changed
-- Renamed `ZipQ` to `ZipQueueType` for better type clarity
-- Renamed `ZipOptions` to `ZipOptionsType` for consistency
-- Renamed `UnzipOptions` to `UnzipOptionsType` for consistency
-- Renamed `UnzipFileInfo` to `UnzipFileInfoType` for consistency
+### ⚠️ Breaking Changes ⚠️
+- Renamed `ZipQ` → `ZipQueueType` for better type clarity
+- Renamed `ZipOptions` → `ZipOptionsType` for consistency
+- Renamed `UnzipOptions` → `UnzipOptionsType` for consistency
+- Renamed `UnzipFileInfo` → `UnzipFileInfoType` for consistency
 
 ## [1.1.0] - 2025-09-24
 
