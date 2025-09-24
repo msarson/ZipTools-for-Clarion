@@ -10,6 +10,31 @@ A high-performance ZIP library for Clarion applications that provides simple int
 
 > **Important:** The ZipTools template requires cape01.tpw and cape02.tpw files to be installed. These are available with any Capesoft product - their free GUTS or REFLECTION addons include these files. See the [Installation and Usage](#installation-and-usage) section for details.
 
+## ⚠️ Breaking Changes in Version 1.2.0 ⚠️
+
+Version 1.2.0 includes several breaking changes that require updates to your code:
+
+- The main class has been renamed from `CZipClass` to `ZipToolsClass` for better naming consistency
+- Several type names have been updated for clarity and consistency (see [CHANGELOG](CHANGELOG.md) for details)
+
+### Updating Your Code
+
+1. **If using the template:**
+   - Run the updated `InstallZipTools.bat` script which will automatically remove obsolete files
+   - Open your application in the Clarion IDE
+   - Go to Application > Global Properties
+   - Select the "Extensions" tab
+   - Open the "Activate ZipTools" extension
+   - Go to the "Classes" tab and click "Refresh"
+
+2. **If using the local extension:**
+   - Open the extension dialog in your procedure
+   - If you see the Class Name is set to "CZipClass", change it to "ZipToolsClass"
+
+3. **If using hand-coded projects:**
+   - Update your include statements from `include('CZipClass.Inc'),Once` to `include('ZipToolsClass.Inc'),Once`
+   - Update any variable declarations from `CZipClass` to `ZipToolsClass`
+
 For a detailed list of changes and version history, see the [CHANGELOG](CHANGELOG.md).
 
 ## Quick Start
