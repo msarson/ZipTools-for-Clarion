@@ -36,7 +36,7 @@ czDebugOn     EQUATE(1)
 !   TRUE if files were selected, FALSE if cancelled
 !--------------------------------------------------------------------
 
-CZipClass.SelectFilesToZip    PROCEDURE(*ZipQ FileQueue)
+CZipClass.SelectFilesToZip    PROCEDURE(*ZipQueueType FileQueue)
 FileUtilities FileUtilitiesClass
 
   CODE
@@ -51,7 +51,7 @@ FileUtilities FileUtilitiesClass
 ! Returns:
 !   TRUE if a folder was selected, FALSE if cancelled
 !--------------------------------------------------------------------
-CZipClass.SelectFolderToZip   PROCEDURE(*ZipQ FileQueue, BYTE IncludeBaseFolder=true)
+CZipClass.SelectFolderToZip   PROCEDURE(*ZipQueueType FileQueue, BYTE IncludeBaseFolder=true)
 FilesUtility FileUtilitiesClass
   CODE
   Return FilesUtility.SelectZipFolder(FileQueue, IncludeBaseFolder,Self.BaseFolder)
@@ -195,7 +195,7 @@ CZipClass.Reset    PROCEDURE()
 ! Returns:
 !   0 on success, error code on failure
 !--------------------------------------------------------------------
-CZipClass.ExtractZipFile PROCEDURE(*UnzipOptions Options)
+CZipClass.ExtractZipFile PROCEDURE(*UnzipOptionsType Options)
 Result                   LONG
   CODE
   ! Store options and delegate to the Reader class
@@ -242,7 +242,7 @@ Result                   LONG
 ! Returns:
 !   0 on success, error count on failure
 !--------------------------------------------------------------------
-CZipClass.CreateZipFile   PROCEDURE(*ZipQ FileQueue, *ZipOptions Options)
+CZipClass.CreateZipFile   PROCEDURE(*ZipQueueType FileQueue, *ZipOptionsType Options)
 i                           LONG
 FilesPerThread              LONG
 ErrorCount                  LONG
@@ -486,7 +486,7 @@ TotalFileSize               ULONG
 ! Returns:
 !   Number of files added
 !--------------------------------------------------------------------
-CZipClass.AddFilesToThreadQueue   PROCEDURE(*ZipWorkerClass ThreadData, *ZipQ FileQueue, LONG StartIdx, LONG EndIdx)
+CZipClass.AddFilesToThreadQueue   PROCEDURE(*ZipWorkerClass ThreadData, *ZipQueueType FileQueue, LONG StartIdx, LONG EndIdx)
 i                                   LONG
 FilesAdded                          LONG
   CODE
@@ -548,7 +548,7 @@ FilesAdded                          LONG
 ! Returns:
 !   Number of files added
 !--------------------------------------------------------------------
-CZipClass.AddFilesToThreadQueueBySize PROCEDURE(*ZipWorkerClass ThreadData, *ZipQ FileQueue, LONG ThreadNum, LONG ThreadCount, ULONG TotalFileSize)
+CZipClass.AddFilesToThreadQueueBySize PROCEDURE(*ZipWorkerClass ThreadData, *ZipQueueType FileQueue, LONG ThreadNum, LONG ThreadCount, ULONG TotalFileSize)
 i                                   LONG
 j                                   LONG
 FilesAdded                          LONG
@@ -740,12 +740,13 @@ FileExt                 CSTRING(10)  ! For storing file extension
     
     ! Rule 1: Check if file is already compressed based on extension
     UseStoreMethod = FALSE
-    IF FileExt = 'PNG' OR FileExt = 'JPG' OR FileExt = 'JPEG' OR FileExt = 'GIF' OR |
-       FileExt = 'ZIP' OR FileExt = 'RAR' OR FileExt = 'MP3' OR FileExt = 'MP4' OR |
-       FileExt = 'PACK' OR FileExt = 'JAR' OR FileExt = 'APK' OR FileExt = 'AAC' OR |
-       FileExt = 'WEBP' OR FileExt = 'PDF' OR FileExt = 'DOCX' OR FileExt = 'XLSX' OR |
-       FileExt = 'PPTX' OR FileExt = 'OGG' OR FileExt = '7Z' OR FileExt = 'BZ2' OR |
-       FileExt = 'GZ' OR FileExt = 'TGZ' OR FileExt = 'EPUB' OR FileExt = 'MOBI'
+    CASE FileExt
+         OF   'PNG'  OROF 'JPG' OROF 'JPEG' OROF 'GIF' 
+         OROF 'ZIP'  OROF 'RAR' OROF 'MP3'  OROF 'MP4' 
+         OROF 'PACK' OROF 'JAR' OROF 'APK'  OROF 'AAC' 
+         OROF 'WEBP' OROF 'PDF' OROF 'DOCX' OROF 'XLSX' 
+         OROF 'PPTX' OROF 'OGG' OROF '7Z'   OROF 'BZ2' 
+         OROF 'GZ'   OROF 'TGZ' OROF 'EPUB' OROF 'MOBI'
       UseStoreMethod = TRUE  ! Use STORE method (no compression) for already compressed files
       ThreadContext.Trace('CreateZipFile: Using STORE method for already compressed file: ' & ThreadContext.FileQueue.ZipFileName)
     END

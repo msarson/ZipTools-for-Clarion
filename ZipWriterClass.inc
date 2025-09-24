@@ -21,7 +21,7 @@ ZipApi           &ZipAPIWrapper  ! Reference to the ZIP API wrapper
 Errors           &ZipErrorClass  ! Reference to the error handling class
 ZipCompBuf       &STRING         ! Fixed-size buffer for compressed data
 ZipCompCap       ULONG           ! Capacity of compressed buffer (fixed at initialization)
-Options          LIKE(ZipOptions)
+Options          LIKE(ZipOptionsType)
 
 ! Constructor and Destructor
 Construct        PROCEDURE()

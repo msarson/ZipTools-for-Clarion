@@ -43,7 +43,7 @@ reserved          ULONG       ! Reserved for future use
 !*************************************************************************
 ! Data Structures
 !*************************************************************************
-ZipQ                  QUEUE,TYPE
+ZipQueueType         QUEUE,TYPE
 ZipFileName             CSTRING(FILE:MaxFilePath + 1)  ! Full path to the file
 version                 ULONG                          ! Version
 version_needed          ULONG                          ! Version needed to extract
@@ -55,10 +55,9 @@ uncompressed_size       ULONG                          ! Uncompressed size
 ZipFileDate             LONG                           ! File date
 ZipFileTime             LONG                           ! File time
 IsFolder               BYTE                           ! 1 if folder, 0 if file
+                    END
 
-                      END
-
-ZipOptions  GROUP,TYPE
+ZipOptionsType  GROUP,TYPE
 ZipName       CSTRING(FILE:MaxFilePath+1)
 Threads       LONG
 Password      CSTRING(256)
@@ -67,7 +66,7 @@ ShowProgress  BYTE       ! TRUE = show progress window, FALSE = run silent
 Comment       CSTRING(512)
              END
 
-UnzipOptions  GROUP,TYPE
+UnzipOptionsType  GROUP,TYPE
 ZipName        CSTRING(FILE:MaxFilePath+1)  ! input zip
 OutputFolder   CSTRING(FILE:MaxFilePath+1)  ! destination folder
 Threads        LONG                         ! 0=auto, 1=single-thread
@@ -76,7 +75,7 @@ Overwrite      BYTE                         ! 0=Ask, 1=Fail if exists, 2=Overwri
 ShowProgress   BYTE                         ! TRUE=show progress window, FALSE=quiet
               END
 
-UnzipFileInfo GROUP,TYPE
+UnzipFileInfoType GROUP,TYPE
 version             ULONG
 version_needed      ULONG
 flag                ULONG

@@ -447,7 +447,7 @@ RetValue                                    LONG
   RETURN RetValue
 
 ZipApiWrapper.unzGetCurrentFileInfo   PROCEDURE( |
-                                        LONG unzFile, *UnzipFileInfo pfile_info, *CSTRING filename, ULONG filenameBufferSize, |
+                                        LONG unzFile, *UnzipFileInfoType pfile_info, *CSTRING filename, ULONG filenameBufferSize, |
                                         <LONG extraField>, ULONG extraFieldBufferSize, <LONG comment>, ULONG commentBufferSize)
 
 RetValue                                LONG

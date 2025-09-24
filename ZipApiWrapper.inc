@@ -100,7 +100,7 @@ unzClose                PROCEDURE(LONG unzFile),LONG,PROC
 unzGoToFirstFile        PROCEDURE(LONG unzFile),LONG
 unzGoToNextFile         PROCEDURE(LONG unzFile),LONG
 unzOpenCurrentFilePassword PROCEDURE(LONG unzFile, *CSTRING password),LONG
-unzGetCurrentFileInfo PROCEDURE(LONG unzFile, *UnzipFileInfo pfile_info, *CSTRING filename, ULONG filenameBufferSize, <LONG extraField>, ULONG extraFieldBufferSize, <LONG comment>, ULONG commentBufferSize),LONG
+unzGetCurrentFileInfo PROCEDURE(LONG unzFile, *UnzipFileInfoType pfile_info, *CSTRING filename, ULONG filenameBufferSize, <LONG extraField>, ULONG extraFieldBufferSize, <LONG comment>, ULONG commentBufferSize),LONG
 unzOpenCurrentFile      PROCEDURE(LONG unzFile),LONG
 unzReadCurrentFile      PROCEDURE(LONG unzFile, *STRING buf, ULONG len),LONG
 unzCloseCurrentFile     PROCEDURE(LONG unzFile),LONG,PROC

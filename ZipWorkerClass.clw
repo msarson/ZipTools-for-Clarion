@@ -72,8 +72,8 @@ ZipWorkerClass.Kill  PROCEDURE()
   ! Clear source queue reference (don't dispose as it's owned by main thread)
   FREE(SELF.SourceQueue)
   SELF.SourceQueue &= NULL
-  
-ZipWorkerClass.Init  PROCEDURE(LONG pStartIdx, LONG pEndIdx, *ZipQ pSourceQueue, LONG pZipHandle, LONG ShowProgress, *IMutex pZipMutex, LONG pThreadNum, *CZipClass pZipClass)
+
+ZipWorkerClass.Init  PROCEDURE(LONG pStartIdx, LONG pEndIdx, *ZipQueueType pSourceQueue, LONG pZipHandle, LONG ShowProgress, *IMutex pZipMutex, LONG pThreadNum, *CZipClass pZipClass)
   CODE
   
   ! Store parameters
@@ -92,7 +92,7 @@ ZipWorkerClass.Init  PROCEDURE(LONG pStartIdx, LONG pEndIdx, *ZipQ pSourceQueue,
   
   ! Create a new file queue for this thread if it doesn't exist
   IF SELF.FileQueue &= NULL
-    SELF.FileQueue &= NEW ZipQ
+    SELF.FileQueue &= NEW ZipQueueType
   END
   
   
@@ -167,7 +167,7 @@ FilesAdded                      LONG
 ! either by count (equal number of files per thread) or by size (equal amount
 ! of data per thread) depending on whether TotalFileSize is provided.
 !--------------------------------------------------------------------
-ZipWorkerClass.InitThreadData  PROCEDURE(LONG ZipHandle, *IMutex ZipMutex, *ZipQ FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *CZipClass ZipBase, <ULONG TotalFileSize>)
+ZipWorkerClass.InitThreadData  PROCEDURE(LONG ZipHandle, *IMutex ZipMutex, *ZipQueueType FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *CZipClass ZipBase, <ULONG TotalFileSize>)
 startIdx                    LONG
 endIdx                      LONG
 FilesAdded                  LONG
@@ -182,7 +182,7 @@ TargetSize ULONG             ! Target size for this thread
    
    ! Create a new file queue for this thread if needed
   IF Self.FileQueue &= NULL
-    Self.FileQueue &= NEW ZipQ
+    Self.FileQueue &= NEW ZipQueueType
   END
    
    ! Set up the thread data with minimal properties

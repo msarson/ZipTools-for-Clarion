@@ -28,14 +28,14 @@ WindowsZipTest    PROCEDURE
 
 ZipClass            CZipClass
 FileUtils           FileUtilitiesClass
-QZipF               QUEUE(ZipQ).
+QZipF               QUEUE(ZipQueueType).
 QDir                QUEUE(FILE:Queue),PRE(QDir).
 
 outputFolder        String(255)
 zipStarted          LONG
 zipEnded            LONG
-zOptions            LIKE(ZipOptions)
-uzOptions           LIKE(UnzipOptions)
+zOptions            LIKE(ZipOptionsType)
+uzOptions           LIKE(UnzipOptionsType)
 ResultsText         STRING(10000)
 zipFileTemp         STRING(255)
 folderPathTemp      STRING(255)

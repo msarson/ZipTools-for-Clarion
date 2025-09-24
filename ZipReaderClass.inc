@@ -20,7 +20,7 @@
 ZipReaderClass   CLASS,TYPE,THREAD,MODULE('ZipReaderClass.clw'),LINK('ZipReaderClass.clw',_ZIPLinkMode_),DLL(_ZIPDllMode_)
 ZipApi           &ZipAPIWrapper  ! Reference to the ZIP API wrapper
 Errors           &ZipErrorClass  ! Reference to the error handling class
-UnzipOptions     LIKE(UnzipOptions)
+UnzipOptions     LIKE(UnzipOptionsType)
 
 ! Constructor and Destructor
 Construct        PROCEDURE()
@@ -28,10 +28,10 @@ Destruct         PROCEDURE()
 
 ! Core extraction and reading methods
 ! Extraction operations
-ExtractZipFile   PROCEDURE(*UnzipOptions Options),LONG  ! Extract all files from a ZIP
+ExtractZipFile   PROCEDURE(*UnzipOptionsType Options),LONG  ! Extract all files from a ZIP
 
 ! ZIP information methods
-GetZipContents   PROCEDURE(*STRING ZipFileName, *ZipQ ContentsQueue),BOOL  ! Get list of files in ZIP
+GetZipContents   PROCEDURE(*STRING ZipFileName, *ZipQueueType ContentsQueue),BOOL  ! Get list of files in ZIP
 GetZipFileCount  PROCEDURE(*STRING ZipFileName),LONG  ! Get number of files in ZIP
 GetZipTotalSize  PROCEDURE(*STRING ZipFileName),LONG  ! Get total uncompressed size of ZIP contents
 

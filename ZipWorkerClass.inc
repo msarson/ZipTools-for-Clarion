@@ -25,7 +25,7 @@ CallerThread        LONG        ! Thread ID of the caller
 ThreadNumber        LONG        ! Thread number (1-8) for identification
 ZipMutex            &IMutex     ! Mutex for ZIP file access
 ! Reference to parent CZipClass is no longer needed - worker is self-contained
-FileQueue           &ZipQ       ! Reference to the file queue
+FileQueue           &ZipQueueType       ! Reference to the file queue
 StartTime           LONG        ! Thread start time (for timing measurements)
 EndTime             LONG        ! Thread end time (for timing measurements)
 ElapsedTime         REAL        ! Elapsed time in seconds
@@ -35,17 +35,17 @@ CompBuf             &STRING     ! Buffer for compressed data
 CompCap             ULONG       ! Capacity of compressed buffer
 StartIdx            LONG        ! Start index for this thread's file slice
 EndIdx              LONG        ! End index for this thread's file slice
-SourceQueue         &ZipQ       ! Reference to the source file queue
+SourceQueue         &ZipQueueType       ! Reference to the source file queue
 BaseFolder      CSTRING(FILE:MaxFilePath+1)  ! Base folder path for relative paths in ZIP
-Options         LIKE(ZipOptions)
+Options         LIKE(ZipOptionsType)
 
 ! BaseFolder is now defined above and no longer commented out
 Construct           PROCEDURE()
 Destruct            PROCEDURE()
 ! Legacy initialization method - replaced by InitThreadData
-Init                PROCEDURE(LONG pStartIdx, LONG pEndIdx, *ZipQ pSourceQueue, LONG pZipHandle, LONG ShowProgress, *IMutex pZipMutex, LONG pThreadNum, *CZipClass pZipClass)
+Init                PROCEDURE(LONG pStartIdx, LONG pEndIdx, *ZipQueueType pSourceQueue, LONG pZipHandle, LONG ShowProgress, *IMutex pZipMutex, LONG pThreadNum, *CZipClass pZipClass)
 ! Modern initialization method with improved workload distribution
-InitThreadData      PROCEDURE(LONG ZipHandle, *IMutex ZipMutex, *ZipQ FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *CZipClass zipBase, <ULONG TotalFileSize>),PROC
+InitThreadData      PROCEDURE(LONG ZipHandle, *IMutex ZipMutex, *ZipQueueType FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *CZipClass zipBase, <ULONG TotalFileSize>),PROC
 BuildQueue          PROCEDURE(),LONG,PROC
 Kill                PROCEDURE()
 ! Debug and error handling

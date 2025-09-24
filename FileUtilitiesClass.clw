@@ -11,7 +11,7 @@ FileUtilitiesClass.DESTRUCT       PROCEDURE()
    CODE
    DISPOSE(Self.ZipApi)
 
-FileUtilitiesClass.SelectFiles    PROCEDURE(*ZipQ FileQueue)
+FileUtilitiesClass.SelectFiles    PROCEDURE(*ZipQueueType FileQueue)
 Found                           CSTRING(10000)
 Path                            CSTRING(File:MaxFilePath + 1)
 Separator                       STRING(1)
@@ -92,7 +92,7 @@ CurrentPath                     CSTRING(File:MaxFilePath + 1)  ! To store curren
   
   RETURN FilesSelected  
 
-FileUtilitiesClass.SelectZipFolder   PROCEDURE(*ZipQ FileQueue, BYTE IncludeBaseFolder=true, *CSTRING BaseFolder)
+FileUtilitiesClass.SelectZipFolder   PROCEDURE(*ZipQueueType FileQueue, BYTE IncludeBaseFolder=true, *CSTRING BaseFolder)
 FolderPath                      CSTRING(File:MaxFilePath + 1)
 FolderSelected                  BOOL
 CurrentPath                     CSTRING(File:MaxFilePath + 1)  ! To store current path
@@ -164,7 +164,7 @@ CurrentPath                   CSTRING(File:MaxFilePath + 1)  ! To store current 
  
  RETURN FilePath
 
-FileUtilitiesClass.ScanFolderRecursively   PROCEDURE(*CSTRING FolderPath, *ZipQ FileQueue, <*CSTRING BasePath>, *CSTRING BaseFolder)
+FileUtilitiesClass.ScanFolderRecursively   PROCEDURE(*CSTRING FolderPath, *ZipQueueType FileQueue, <*CSTRING BasePath>, *CSTRING BaseFolder)
 FolderFiles                         QUEUE(FILE:Queue),PRE(ff)
                                     END
 SubFolderPath                       CSTRING(FILE:MaxFilePath+1)

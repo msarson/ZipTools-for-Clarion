@@ -39,7 +39,7 @@ ZipReaderClass.Destruct  PROCEDURE()
 ! Returns:
 !   0 on success, error code on failure
 !--------------------------------------------------------------------
-ZipReaderClass.ExtractZipFile PROCEDURE(*UnzipOptions Options)
+ZipReaderClass.ExtractZipFile PROCEDURE(*UnzipOptionsType Options)
 unzFH             LONG
 FileBuffer        &STRING
 BufferSize        LONG(262144)        ! Default 256KB buffer size
@@ -56,7 +56,7 @@ TotalFiles        LONG
 CurrentFile       LONG
 FileUtility       FileUtilitiesClass
 ClosingWindow     BYTE(0)
-FileInfo          LIKE(UnzipFileInfo)
+FileInfo          LIKE(UnzipFileInfoType)
 FileOpened        BYTE(FALSE)
 LocalPassword     CSTRING(256)
 ReturnValue       LONG
@@ -285,7 +285,7 @@ FileName                    CSTRING(FILE:MaxFilePath+1)
 Result                      LONG,AUTO
 csZipName                   CSTRING(FILE:MaxFilePath+1)
 TotalSize                   LONG
-FileInfo                    LIKE(UnzipFileInfo)
+FileInfo                    LIKE(UnzipFileInfoType)
 LastError                   LONG
 CurrentDir                  CSTRING(FILE:MaxFilePath+1)  ! Current directory
 AbsolutePath                CSTRING(FILE:MaxFilePath+1)  ! Absolute path to ZIP file
@@ -386,7 +386,7 @@ LastError                   LONG
 CurrentDir                  CSTRING(FILE:MaxFilePath+1)  ! Current directory
 AbsolutePath                CSTRING(FILE:MaxFilePath+1)  ! Absolute path to ZIP file
 FileHandle                        LONG
-FileInfo  LIKE(UnzipFileInfo)
+FileInfo  LIKE(UnzipFileInfoType)
   CODE
    Self.Trace('GetZipFileCount: Start') 
  
@@ -472,12 +472,12 @@ FileInfo  LIKE(UnzipFileInfo)
 ! Returns:
 !   TRUE if successful, FALSE if failed
 !--------------------------------------------------------------------
-ZipReaderClass.GetZipContents  PROCEDURE(*STRING ZipFileName, *ZipQ ContentsQueue)
+ZipReaderClass.GetZipContents  PROCEDURE(*STRING ZipFileName, *ZipQueueType ContentsQueue)
 unzFH                       LONG
 FileName                    CSTRING(FILE:MaxFilePath+1)
 Result                      LONG,AUTO
 csZipName                   CSTRING(FILE:MaxFilePath+1)
-FileInfo                    Like(UnzipFileInfo)
+FileInfo                    Like(UnzipFileInfoType)
   
 LastError                   LONG
 CurrentDir                  CSTRING(FILE:MaxFilePath+1)  ! Current directory

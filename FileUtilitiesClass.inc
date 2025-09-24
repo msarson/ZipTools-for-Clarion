@@ -11,11 +11,11 @@ CreateDirectoriesFromPath   PROCEDURE(STRING DirectoryPath),PROC,BOOL
 FileNameOnly    PROCEDURE(<STRING fPath>),STRING
 GetFileExtension   PROCEDURE(STRING FileName),STRING
 PathOnly        PROCEDURE(<STRING fPath>),STRING
-SelectFiles    PROCEDURE(*ZipQ FileQueue),BOOL
-SelectZipFolder   PROCEDURE(*ZipQ FileQueue, BYTE IncludeBaseFolder=TRUE, *CSTRING BaseFolder),BOOL
+SelectFiles    PROCEDURE(*ZipQueueType FileQueue),BOOL
+SelectZipFolder   PROCEDURE(*ZipQueueType FileQueue, BYTE IncludeBaseFolder=TRUE, *CSTRING BaseFolder),BOOL
 SelectFolder    PROCEDURE(String Title, String FileTypeSelection),STRING
 SelectFile     PROCEDURE(String Title, String FileTypeSelection),STRING
-ScanFolderRecursively   PROCEDURE(*CSTRING FolderPath, *ZipQ FileQueue, <*CSTRING BasePath>, *CSTRING BaseFolder),LONG,PROC,PRIVATE
+ScanFolderRecursively   PROCEDURE(*CSTRING FolderPath, *ZipQueueType FileQueue, <*CSTRING BasePath>, *CSTRING BaseFolder),LONG,PROC,PRIVATE
    END
 
 
