@@ -2,7 +2,7 @@
 
 All notable changes to the ZipTools project will be documented in this file.
 
-## [1.2.0] - Unreleased
+## [1.2.0] - 2025-09-24
 
 ### ⚠️ Breaking Changes ⚠️
 - Renamed `CZipClass` → `ZipToolsClass` for better naming consistency with library
