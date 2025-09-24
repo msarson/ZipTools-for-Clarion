@@ -3,3 +3,19 @@
 *.inc text eol=crlf
 *.cwproj text eol=crlf
 *.sln text eol=crlf
+
+# Treat all Clarion sources as Clarion
+*.clw linguist-language=Clarion
+*.inc linguist-language=Clarion
+*.int linguist-language=Clarion
+*.equ linguist-language=Clarion
+*.tpl linguist-language=Clarion
+*.tpw linguist-language=Clarion
+
+# Batch files
+*.bat linguist-language=Batchfile
+
+# Don’t count DLLs and LIBs in language stats
+*.dll linguist-vendored
+*.lib linguist-vendored
+
