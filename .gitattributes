@@ -15,7 +15,9 @@
 # Batch files
 *.bat linguist-language=Batchfile
 
-# Don’t count DLLs and LIBs in language stats
+# Ignore vendored/binary files
 *.dll linguist-vendored
 *.lib linguist-vendored
+*.exe linguist-vendored
+*.zip linguist-vendored
 
