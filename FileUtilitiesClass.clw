@@ -397,7 +397,18 @@ CleanPath                           STRING(FILE:MaxFilePath+1)
   
   ! Call PathOnly to ensure we're only working with a directory path
   ! This handles cases where someone might pass a full path with filename
-  CleanPath = SELF.PathOnly(DirectoryPath)
+  CleanPath = DirectoryPath
+
+  ! Find last backslash
+  pos# = INSTRING('\', DirectoryPath, -1, LEN(CLIP(DirectoryPath)))
+  IF pos# > 0
+    ! Substring after the last backslash
+    tail# = SUB(CLIP(DirectoryPath), pos#+1, LEN(CLIP(DirectoryPath))-pos#)
+    ! Does it contain a dot?
+    IF INSTRING('.', tail#, 1, 1) > 0
+      CleanPath = SELF.PathOnly(DirectoryPath)
+    END
+  END
   
   ! If PathOnly returned empty but original path wasn't empty,
   ! it might be just a filename or a relative path without backslashes

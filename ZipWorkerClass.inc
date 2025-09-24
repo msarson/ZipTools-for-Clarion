@@ -15,7 +15,7 @@
 !*************************************************************************
 ! Thread data class for passing data to the thread
 !*************************************************************************
-ZipWorkerClass   CLASS,TYPE,THREAD,MODULE('ZipWorkerClass.clw'),LINK('ZipWorkerClass.clw',_ZIPLinkMode_),DLL(_ZIPDllMode_)
+ZipWorkerClass   CLASS,TYPE,THREAD,MODULE('ZipWorkerClass.clw'),LINK('ZipWorkerClass.clw')!,_ZIPLinkMode_),DLL(_ZIPDllMode_)
 ZipApi        &ZipAPIWrapper  ! Reference to the ZIP API wrapper
 Writer        &ZipWriterClass ! Reference to the ZIP writer class
 Errors        &ZipErrorClass  ! Reference to the error handling class
@@ -49,10 +49,8 @@ InitThreadData      PROCEDURE(LONG ZipHandle, *IMutex ZipMutex, *ZipQ FileQueue,
 BuildQueue          PROCEDURE(),LONG,PROC
 Kill                PROCEDURE()
 ! Debug and error handling
-Trace           PROCEDURE(STRING Message)
-WritePrecompressedToZip PROCEDURE( |
-                           LONG ZipHandle, *CSTRING ZipEntryName, zip_fileinfo_s zipfi, |
-                           LONG pCompBuf, ULONG CompSize, ULONG UncSize, ULONG Crc, *IMutex ZipMutex, BYTE UseStoreMethod, *CSTRING ZipPath),LONG,Virtual
+Trace                   PROCEDURE(STRING Message)
+WritePrecompressedToZip PROCEDURE(LONG ZipHandle, *CSTRING ZipEntryName, *zip_fileinfo_s zipfi, LONG pCompBuf, ULONG CompSize, ULONG UncSize, ULONG Crc, *IMutex ZipMutex, BYTE UseStoreMethod, *CSTRING ZipPath),LONG,Virtual
 CompressFileToBuffer    PROCEDURE(*CSTRING FileName, *ULONG OutUncSize, *ULONG OutCrc, *ULONG OutCompSize),LONG
 ReadFileToBuffer        PROCEDURE(STRING FileName, *STRING BufRef, ULONG MaxSize, *ULONG OutSize, *ULONG OutCrc),LONG
                   END

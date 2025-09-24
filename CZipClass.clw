@@ -322,6 +322,7 @@ TotalFileSize               ULONG
 
 
   ! Create the ZIP file
+  
   zipFH = SELF.ZipApi.zipOpen(FileToZip, CZ_ZIP_APPEND_STATUS_CREATE)
   IF zipFH <= 0
     MESSAGE('Failed to create zip file: ' & Options.ZipName, 'Error')

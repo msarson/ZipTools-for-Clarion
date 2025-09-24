@@ -82,7 +82,7 @@ ZipApiWrapper    CLASS(ZipErrorClass),TYPE,MODULE('ZipApiWrapper.clw'),LINK('Zip
 ! Constructor and Destructor
 Construct               PROCEDURE()
 Destruct                PROCEDURE()
-
+LoadLibs                PROCEDURE(),LONG
 ! ZIP API (minizip-style functions from zlib for creating and manipulating ZIP files)
 zipOpen                 PROCEDURE(*CSTRING ZipFileName, LONG appendmode),LONG
 zipWriteInFileInZip     PROCEDURE(LONG zipHandle, LONG pBuf, ULONG len),LONG,PROC
@@ -90,19 +90,8 @@ zipCloseFileInZipRaw    PROCEDURE(LONG zipFile, LONG uncompressed_size, ULONG cr
 zipCloseFileInZip       PROCEDURE(LONG zipFile),LONG,PROC
 zipClose                PROCEDURE(LONG zipFile, *CSTRING global_comment),LONG,PROC
 zipOpenNewFileInZip     PROCEDURE(LONG zipFile, *CSTRING filename, *zip_fileinfo_s zipfi, *CSTRING extrafield_local, LONG size_extrafield_local, *CSTRING extrafield_global, LONG size_extrafield_global, *CSTRING comment, LONG method, LONG level),LONG
-zipOpenNewFileInZip2    PROCEDURE( |
-                            LONG zipFile, *CSTRING filename, *zip_fileinfo_s zipfi, |
-                            *CSTRING extrafield_local, ULONG size_extrafield_local, |
-                            *CSTRING extrafield_global, ULONG size_extrafield_global, |
-                            *CSTRING comment, LONG method, LONG level, LONG raw, |
-                            LONG windowBits, LONG memLevel, LONG strategy),LONG
-zipOpenNewFileInZip3 PROCEDURE( |
-    LONG zipFile, *CSTRING filename, *zip_fileinfo_s zipfi, |
-    *CSTRING extrafield_local, LONG size_extrafield_local, |
-    *CSTRING extrafield_global, LONG size_extrafield_global, |
-    *CSTRING comment, LONG method, LONG level, LONG raw, |
-    LONG windowBits, LONG memLevel, LONG strategy, |
-    *CSTRING password, ULONG crcForCrypting),LONG        | !CRC32 of uncompressed data (required if password)
+zipOpenNewFileInZip2    PROCEDURE(LONG zipFile, *CSTRING filename, *zip_fileinfo_s zipfi, *CSTRING extrafield_local, ULONG size_extrafield_local, *CSTRING extrafield_global, ULONG size_extrafield_global, *CSTRING comment, LONG method, LONG level, LONG raw, LONG windowBits, LONG memLevel, LONG strategy),LONG
+zipOpenNewFileInZip3    PROCEDURE(LONG zipFile, *CSTRING filename, *zip_fileinfo_s zipfi, *CSTRING extrafield_local, LONG size_extrafield_local, *CSTRING extrafield_global, LONG size_extrafield_global, *CSTRING comment, LONG method, LONG level, LONG raw, LONG windowBits, LONG memLevel, LONG strategy, *CSTRING password, ULONG crcForCrypting),LONG        !CRC32 of uncompressed data (required if password)
 
 
 ! UNZIP API (functions for extracting and reading ZIP files)
@@ -111,9 +100,7 @@ unzClose                PROCEDURE(LONG unzFile),LONG,PROC
 unzGoToFirstFile        PROCEDURE(LONG unzFile),LONG
 unzGoToNextFile         PROCEDURE(LONG unzFile),LONG
 unzOpenCurrentFilePassword PROCEDURE(LONG unzFile, *CSTRING password),LONG
-unzGetCurrentFileInfo PROCEDURE( |
-    LONG unzFile, *UnzipFileInfo pfile_info, *CSTRING filename, ULONG filenameBufferSize, |
-    <LONG extraField>, ULONG extraFieldBufferSize, <LONG comment>, ULONG commentBufferSize),LONG
+unzGetCurrentFileInfo PROCEDURE(LONG unzFile, *UnzipFileInfo pfile_info, *CSTRING filename, ULONG filenameBufferSize, <LONG extraField>, ULONG extraFieldBufferSize, <LONG comment>, ULONG commentBufferSize),LONG
 unzOpenCurrentFile      PROCEDURE(LONG unzFile),LONG
 unzReadCurrentFile      PROCEDURE(LONG unzFile, *STRING buf, ULONG len),LONG
 unzCloseCurrentFile     PROCEDURE(LONG unzFile),LONG,PROC
@@ -127,7 +114,7 @@ crc32                   PROCEDURE(ULONG crc, *STRING buf, ULONG len),ULONG
 ! WINDOWS API CALLS (file system and process operations)
 CreateFile              PROCEDURE(*CSTRING lpFileName, ULONG dwDesiredAccess, ULONG dwShareMode, <*?>, ULONG dwCreationDisposition, ULONG dwFlagsAndAttributes, UNSIGNED hTemplateFile),LONG
 WriteFile               PROCEDURE(UNSIGNED hFile, *STRING lpBuffer, ULONG nNumberOfBytesToWrite, *ULONG lpNumberOfBytesWritten, <*?>),BOOL,PROC
-ReadFile            PROCEDURE(UNSIGNED hFile, *STRING lpBuffer, ULONG nNumberOfBytesToRead, *ULONG lpNumberOfBytesRead, LONG lpOverlapped),BOOL
+ReadFile              PROCEDURE(UNSIGNED hFile, *STRING lpBuffer, ULONG nNumberOfBytesToRead, *ULONG lpNumberOfBytesRead, LONG lpOverlapped),BOOL
 CloseFile               PROCEDURE(UNSIGNED hObject),BOOL,PROC
 GetLastError            PROCEDURE(),ULONG
 CreateDirectory         PROCEDURE(*CSTRING lpPathName),BOOL
@@ -137,9 +124,9 @@ ODS                     PROCEDURE(*CSTRING lpOutputString)
 WaitForThread           PROCEDURE(LONG ThreadID),LONG
 Sleep                   PROCEDURE(ULONG dwMilliseconds)
 GetFileSize             PROCEDURE(*LONG hFile),ULONG
-FlushFileBuffers    PROCEDURE(LONG hFile),BOOL
-MemCpy              PROCEDURE(*STRING Dest,*STRING Source,LONG nCount),LONG,PROC
+FlushFileBuffers        PROCEDURE(LONG hFile),BOOL
+MemCpy                  PROCEDURE(*STRING Dest,*STRING Source,LONG nCount),LONG,PROC
 ! Debug and utility methods
-Trace            PROCEDURE(STRING Message)  ! Output debug message
+Trace                   PROCEDURE(STRING Message)  ! Output debug message
                        END
 

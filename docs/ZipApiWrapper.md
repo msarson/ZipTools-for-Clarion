@@ -2,11 +2,13 @@
 
 `ZipApiWrapper` provides a low-level wrapper for the zLib library functions. It serves as the interface between the Clarion code and the native zLib DLL functions, handling the necessary data type conversions and function calls. It separates the low-level API bindings from the business logic, providing a clean interface to the underlying compression libraries.
 
+The wrapper now dynamically loads the zlib and zlibwapi DLLs at runtime, which provides better compatibility and flexibility when deploying your application.
+
 ## Overview
 
 The `ZipApiWrapper` class:
 
-- Loads and manages the zLib DLL
+- Dynamically loads and manages the zLib DLLs at runtime
 - Provides Clarion-friendly wrappers for zLib functions
 - Handles data type conversions between Clarion and C
 - Manages memory allocation and deallocation for zLib operations
@@ -16,11 +18,25 @@ The `ZipApiWrapper` class:
 
 ### `Construct`
 
-Initializes the wrapper and loads the zLib DLL.
+Initializes the wrapper and dynamically loads the zLib DLLs.
 
 ```clarion
 Construct()
 ```
+
+### `LoadLibs`
+
+Dynamically loads the zlib and zlibwapi DLLs and resolves all function pointers.
+
+```clarion
+LoadLibs()
+```
+
+This method:
+1. Attempts to load zlibwapi.dll
+2. Attempts to load zlib1.dll
+3. Resolves all function pointers for ZIP, UNZIP, and core zLib functions
+4. Returns LEVEL:Benign on success or LEVEL:Notify on failure
 
 ### `Destruct`
 

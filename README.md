@@ -2,6 +2,8 @@
 
 A high-performance ZIP library for Clarion applications that provides simple interfaces for creating, manipulating, and extracting ZIP files.
 
+For a detailed list of changes and version history, see the [CHANGELOG](CHANGELOG.md).
+
 ## Quick Start
 
 ### Basic Zipping
@@ -23,7 +25,7 @@ IF MyZip.SelectFilesToZip(FileQ)
   IF MyZip.CreateZipFile(FileQ, ZipOpts) = 0
     MESSAGE('ZIP file created successfully')
   ELSE
-    MESSAGE('Error: ' & MyZip.GetErrorMessage())
+    MESSAGE('Error: ' & MyZip.Errors.GetErrorMessage())
   END
 END
 ```
@@ -48,7 +50,7 @@ IF MyZip.SelectFolderToZip(FileQ, FALSE)
   IF MyZip.CreateZipFile(FileQ, ZipOpts) = 0
     MESSAGE('Folder contents zipped successfully')
   ELSE
-    MESSAGE('Error: ' & MyZip.GetErrorMessage())
+    MESSAGE('Error: ' & MyZip.Errors.GetErrorMessage())
   END
 END
 ```
@@ -73,7 +75,7 @@ IF MyZip.SelectFolderToZip(FileQ, TRUE)
   IF MyZip.CreateZipFile(FileQ, ZipOpts) = 0
     MESSAGE('Folder with contents zipped successfully')
   ELSE
-    MESSAGE('Error: ' & MyZip.GetErrorMessage())
+    MESSAGE('Error: ' & MyZip.Errors.GetErrorMessage())
   END
 END
 ```
@@ -94,7 +96,7 @@ UnzipOpts.Overwrite = UZ_OVERWRITE_SILENT
 IF MyZip.ExtractZipFile(UnzipOpts) = 0
   MESSAGE('ZIP file extracted successfully')
 ELSE
-  MESSAGE('Error: ' & MyZip.GetErrorMessage())
+  MESSAGE('Error: ' & MyZip.Errors.GetErrorMessage())
 END
 ```
 
@@ -167,13 +169,38 @@ This repository includes the required zLib DLL files:
 - `zlib1.dll` - Standard zLib library
 - `zlibwapi.dll` - Windows API version of zLib
 
-These DLLs were compiled from the latest zLib version and are ready to use with the library.
+These DLLs were compiled from the latest zLib version and are ready to use with the library. The library now dynamically loads these DLLs at runtime, which provides better compatibility and flexibility when deploying your application.
 
 ## Installation and Usage
 
-### Project Configuration
+### Using the Clarion Template
 
-To use CZipClass in your Clarion application, you must define the following in your project file:
+The repository now includes a Clarion template (`ZipTools.tpl`) that makes it easy to integrate the ZIP functionality into your Clarion applications:
+
+1. Run the `InstallZipTools.bat` script with the path to your Clarion root folder:
+   ```
+   InstallZipTools.bat "C:\Clarion\Clarion11.1"
+   ```
+   This will copy all necessary files to the appropriate Clarion directories.
+
+2. Register the `ZipTools.tpl` template in your Clarion IDE:
+   - Open the Clarion IDE
+   - Go to Tools > Template Registry
+   - Click "Register"
+   - Navigate to your Clarion template directory (e.g., `C:\Clarion\Clarion11.1\Accessory\Template\win`)
+   - Select `ZipTools.tpl` and click "Open"
+
+3. Add the ZipTools template to your application:
+   - Open your application
+   - Go to Application > Global Properties
+   - Select the "Extensions" tab
+   - Add "Activate ZipTools" extension
+
+**Note:** The ZipTools template requires at least one Capesoft product that contains cape01.tpw and cape02.tpw to be installed in order to be able to register. If you don't have them, you can get them from [Capesoft](https://capesoft.com/clarion) - their GUTS or REFLECTION addons are free and contain these.
+
+### Manual Project Configuration
+
+To use CZipClass in your Clarion application without the template, you must define the following in your project file:
 
 ```clarion
 _ZIPLinkMode_=>1
@@ -246,6 +273,10 @@ The current implementation features a different architecture with:
 - Improved memory management
 
 If you're familiar with Marcelo's original work, you'll find this implementation takes a significantly different approach while addressing the same fundamental need for ZIP functionality in Clarion applications.
+
+### Capesoft
+
+The ZipTools template uses cape01.tpw and cape02.tpw from Capesoft. I would like to thank Capesoft for their excellent Clarion tools and templates that have made this integration possible. Their GUTS or REFLECTION addons, which include these template files, are available for free from [Capesoft](https://capesoft.com/clarion).
 
 ## License
 

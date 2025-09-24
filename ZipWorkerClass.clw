@@ -278,9 +278,7 @@ TargetSize ULONG             ! Target size for this thread
 ! Returns:
 !   0 on success, error code on failure
 !--------------------------------------------------------------------
-ZipWorkerClass.WritePrecompressedToZip PROCEDURE( |
-  LONG ZipHandle, *CSTRING ZipEntryName, zip_fileinfo_s zipfi, |
-  LONG pCompBuf, ULONG CompSize, ULONG UncSize, ULONG Crc, *IMutex ZipMutex, BYTE UseStoreMethod, *CSTRING ZipPath)
+ZipWorkerClass.WritePrecompressedToZip PROCEDURE(LONG ZipHandle, *CSTRING ZipEntryName, *zip_fileinfo_s zipfi, LONG pCompBuf, ULONG CompSize, ULONG UncSize, ULONG Crc, *IMutex ZipMutex, BYTE UseStoreMethod, *CSTRING ZipPath)
 
   CODE
   ! Pass options to Writer
