@@ -18,8 +18,8 @@ For a detailed list of changes and version history, see the [CHANGELOG](CHANGELO
 
 ```clarion
 MyZip CZipClass
-FileQ ZipQ
-ZipOpts LIKE(ZipOptions)
+FileQ ZipQueueType
+ZipOpts LIKE(ZipOptionsType)
 
 ! Add files to queue using file selection dialog
 IF MyZip.SelectFilesToZip(FileQ)
@@ -42,8 +42,8 @@ END
 
 ```clarion
 MyZip CZipClass
-FileQ ZipQ
-ZipOpts LIKE(ZipOptions)
+FileQ ZipQueueType
+ZipOpts LIKE(ZipOptionsType)
 
 ! Add folder contents to queue using folder selection dialog
 ! Second parameter (false) means don't include the base folder itself, just its contents
@@ -67,8 +67,8 @@ END
 
 ```clarion
 MyZip CZipClass
-FileQ ZipQ
-ZipOpts LIKE(ZipOptions)
+FileQ ZipQueueType
+ZipOpts LIKE(ZipOptionsType)
 
 ! Add folder and all its contents to queue using folder selection dialog
 ! Default or TRUE for second parameter includes the base folder in the zip
@@ -92,7 +92,7 @@ END
 
 ```clarion
 MyZip CZipClass
-UnzipOpts LIKE(UnzipOptions)
+UnzipOpts LIKE(UnzipOptionsType)
 
 ! Configure unzip options
 UnzipOpts.ZipName = 'C:\Input\Archive.zip'
@@ -113,12 +113,12 @@ END
 
 The library uses two main options structures to control ZIP operations:
 
-### ZipOptions
+### ZipOptionsType
 
 Used for creating ZIP files with `CreateZipFile`:
 
 ```clarion
-ZipOpts LIKE(ZipOptions)
+ZipOpts LIKE(ZipOptionsType)
 ZipOpts.ZipName = 'C:\Output\MyArchive.zip'  ! Name of the ZIP file to create
 ZipOpts.Threads = 8                          ! Number of worker threads (default: 8)
 ZipOpts.Password = 'SecretPassword'          ! Optional password for encryption
@@ -142,12 +142,12 @@ The library uses an adaptive compression strategy that automatically selects the
 4. If file size is >50 MB and extension is EXE, DLL, BIN → use level 1 (fastest)
 5. Otherwise → use level 6 (balanced default)
 
-### UnzipOptions
+### UnzipOptionsType
 
 Used for extracting ZIP files with `ExtractZipFile`:
 
 ```clarion
-UnzipOpts LIKE(UnzipOptions)
+UnzipOpts LIKE(UnzipOptionsType)
 UnzipOpts.ZipName = 'C:\Input\Archive.zip'     ! Name of the ZIP file to extract
 UnzipOpts.OutputFolder = 'C:\Output\Files'     ! Folder to extract files to
 UnzipOpts.Threads = 8                          ! Number of worker threads (0=auto)

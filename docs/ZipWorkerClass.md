@@ -43,7 +43,7 @@ Kill()
 Initializes thread data for parallel processing.
 
 ```clarion
-InitThreadData(LONG ZipHandle, *IMutex ZipMutex, *ZipQ FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *CZipClass zipBase, <ULONG TotalFileSize>)
+InitThreadData(LONG ZipHandle, *IMutex ZipMutex, *ZipQueueType FileQueue, LONG ThreadNum, LONG FilesPerThread, LONG ThreadCount, *CZipClass zipBase, <ULONG TotalFileSize>)
 ```
 
 **Parameters:**

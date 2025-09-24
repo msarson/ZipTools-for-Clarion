@@ -11,11 +11,11 @@
 Creates a ZIP file from a queue of files using multiple threads for improved performance.
 
 ```clarion
-CreateZipFile(*ZipQ FileQueue, *ZipOptions Options)
+CreateZipFile(*ZipQueueType FileQueue, *ZipOptionsType Options)
 ```
 
 **Parameters:**
-- `FileQueue`: Queue of files to add to the ZIP (ZipQ type)
+- `FileQueue`: Queue of files to add to the ZIP (ZipQueueType type)
 - `Options`: ZIP options structure containing settings like:
   - `ZipName`: Name of the ZIP file to create
   - `Threads`: Number of worker threads to use (default: 8)
@@ -36,11 +36,11 @@ CreateZipFile(*ZipQ FileQueue, *ZipOptions Options)
 Shows a file dialog to select files to add to a ZIP.
 
 ```clarion
-SelectFilesToZip(*ZipQ FileQueue)
+SelectFilesToZip(*ZipQueueType FileQueue)
 ```
 
 **Parameters:**
-- `FileQueue`: Queue to add selected files to (ZipQ type)
+- `FileQueue`: Queue to add selected files to (ZipQueueType type)
 
 **Returns:** TRUE if files were selected, FALSE if cancelled
 
@@ -49,11 +49,11 @@ SelectFilesToZip(*ZipQ FileQueue)
 Shows a folder dialog to select a folder to add to a ZIP.
 
 ```clarion
-SelectFolderToZip(*ZipQ FileQueue, BYTE IncludeBaseFolder=TRUE)
+SelectFolderToZip(*ZipQueueType FileQueue, BYTE IncludeBaseFolder=TRUE)
 ```
 
 **Parameters:**
-- `FileQueue`: Queue to add selected folder and its contents to (ZipQ type)
+- `FileQueue`: Queue to add selected folder and its contents to (ZipQueueType type)
 - `IncludeBaseFolder` (optional): TRUE to include the folder itself in the ZIP, FALSE to make folder contents the root (defaults to TRUE)
 
 **Returns:** TRUE if a folder was selected, FALSE if cancelled
@@ -65,7 +65,7 @@ SelectFolderToZip(*ZipQ FileQueue, BYTE IncludeBaseFolder=TRUE)
 Extracts all files from a ZIP file to a folder.
 
 ```clarion
-ExtractZipFile(*UnzipOptions Options)
+ExtractZipFile(*UnzipOptionsType Options)
 ```
 
 **Parameters:**
@@ -164,8 +164,8 @@ The class uses an adaptive compression strategy that automatically selects the o
 
 ```clarion
 MyZip CZipClass
-FileQ ZipQ
-ZipOpts LIKE(ZipOptions)
+FileQ ZipQueueType
+ZipOpts LIKE(ZipOptionsType)
 
 ! Set ZIP file name
 ZipOpts.ZipName = 'C:\Output\LargeArchive.zip'
@@ -188,8 +188,8 @@ END
 
 ```clarion
 MyZip CZipClass
-FileQ ZipQ
-ZipOpts LIKE(ZipOptions)
+FileQ ZipQueueType
+ZipOpts LIKE(ZipOptionsType)
 
 ! Set ZIP file name and password
 ZipOpts.ZipName = 'C:\Output\ProtectedArchive.zip'
@@ -214,7 +214,7 @@ END
 ```clarion
 MyZip CZipClass
 ZipFile STRING(260)
-ContentsQ ZipQ
+ContentsQ ZipQueueType
 FileCount LONG
 TotalSize LONG
 

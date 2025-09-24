@@ -35,7 +35,7 @@ Destruct()
 Extracts all files from a ZIP file to a folder.
 
 ```clarion
-ExtractZipFile(*UnzipOptions Options)
+ExtractZipFile(*UnzipOptionsType Options)
 ```
 
 **Parameters:**
@@ -54,12 +54,12 @@ ExtractZipFile(*UnzipOptions Options)
 Gets the contents of a ZIP file without extracting.
 
 ```clarion
-GetZipContents(*STRING ZipFileName, *ZipQ ContentsQueue)
+GetZipContents(*STRING ZipFileName, *ZipQueueType ContentsQueue)
 ```
 
 **Parameters:**
 - `ZipFileName`: Name of the ZIP file to read
-- `ContentsQueue`: Queue to populate with ZIP file contents (ZipQ type)
+- `ContentsQueue`: Queue to populate with ZIP file contents (ZipQueueType type)
 
 **Returns:** TRUE if successful, FALSE if failed
 
@@ -105,16 +105,16 @@ Trace(STRING Message)
 
 ## Configuration Properties
 
-### `UnzipOptions`
+### `UnzipOptionsType`
 
-The `UnzipOptions` structure controls extraction behavior:
+The `UnzipOptionsType` structure controls extraction behavior:
 
 ```clarion
-MyZipReader.UnzipOptions.ZipName = 'archive.zip'        ! ZIP file to extract
-MyZipReader.UnzipOptions.OutputFolder = 'C:\Output'     ! Destination folder
-MyZipReader.UnzipOptions.Password = 'secret'            ! Optional password
-MyZipReader.UnzipOptions.Overwrite = UZ_OVERWRITE_ASK   ! Ask before overwriting
-MyZipReader.UnzipOptions.ShowProgress = TRUE            ! Show progress window
+MyZipReader.UnzipOptionsType.ZipName = 'archive.zip'        ! ZIP file to extract
+MyZipReader.UnzipOptionsType.OutputFolder = 'C:\Output'     ! Destination folder
+MyZipReader.UnzipOptionsType.Password = 'secret'            ! Optional password
+MyZipReader.UnzipOptionsType.Overwrite = UZ_OVERWRITE_ASK   ! Ask before overwriting
+MyZipReader.UnzipOptionsType.ShowProgress = TRUE            ! Show progress window
 ```
 
 Overwrite options:
@@ -128,7 +128,7 @@ Overwrite options:
 
 ```clarion
 MyZip CZipClass
-UnzipOpts UnzipOptions
+UnzipOpts UnzipOptionsType
 Result LONG
 
 ! Set extraction options
@@ -150,7 +150,7 @@ END
 
 ```clarion
 MyZip CZipClass
-UnzipOpts UnzipOptions
+UnzipOpts UnzipOptionsType
 Result LONG
 
 ! Set extraction options with password
@@ -174,7 +174,7 @@ END
 ```clarion
 MyZip CZipClass
 ZipFile STRING(260)
-ContentsQ ZipQ
+ContentsQ ZipQueueType
 
 ! Set ZIP file name
 ZipFile = 'C:\Input\Archive.zip'

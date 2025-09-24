@@ -211,7 +211,7 @@ unzGoToNextFile(LONG unzFile)
 Gets information about the current file in the ZIP archive.
 
 ```clarion
-unzGetCurrentFileInfo(LONG unzFile, *UnzipFileInfo pfile_info, *CSTRING filename, ULONG filenameBufferSize, <LONG extraField>, ULONG extraFieldBufferSize, <LONG comment>, ULONG commentBufferSize)
+unzGetCurrentFileInfo(LONG unzFile, *UnzipFileInfoType pfile_info, *CSTRING filename, ULONG filenameBufferSize, <LONG extraField>, ULONG extraFieldBufferSize, <LONG comment>, ULONG commentBufferSize)
 ```
 
 **Parameters:**
@@ -420,12 +420,12 @@ zip_fileinfo_s GROUP,TYPE
 END
 ```
 
-### `UnzipFileInfo`
+### `UnzipFileInfoType`
 
 Structure containing information about a file in a ZIP archive.
 
 ```clarion
-UnzipFileInfo GROUP,TYPE
+UnzipFileInfoType GROUP,TYPE
   version             ULONG
   version_needed      ULONG
   flag                ULONG

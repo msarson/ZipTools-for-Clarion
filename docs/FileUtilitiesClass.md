@@ -91,7 +91,7 @@ CreateDirectoriesFromPath(*CSTRING DirectoryPath)
 Recursively scans a folder and adds all files to the queue.
 
 ```clarion
-ScanFolderRecursively(*CSTRING FolderPath, *ZipQ FileQueue, <*CSTRING BasePath>, *CSTRING BaseFolder)
+ScanFolderRecursively(*CSTRING FolderPath, *ZipQueueType FileQueue, <*CSTRING BasePath>, *CSTRING BaseFolder)
 ```
 
 **Parameters:**
@@ -109,7 +109,7 @@ ScanFolderRecursively(*CSTRING FolderPath, *ZipQ FileQueue, <*CSTRING BasePath>,
 Shows file dialog to select files to add to a ZIP.
 
 ```clarion
-SelectFiles(*ZipQ FileQueue)
+SelectFiles(*ZipQueueType FileQueue)
 ```
 
 **Parameters:**
@@ -122,7 +122,7 @@ SelectFiles(*ZipQ FileQueue)
 Shows folder dialog to select a folder to add to a ZIP.
 
 ```clarion
-SelectZipFolder(*ZipQ FileQueue, BYTE IncludeBaseFolder=TRUE, *CSTRING BaseFolder)
+SelectZipFolder(*ZipQueueType FileQueue, BYTE IncludeBaseFolder=TRUE, *CSTRING BaseFolder)
 ```
 
 **Parameters:**
@@ -191,7 +191,7 @@ DISPOSE(MyFileUtils)
 ```clarion
 MyFileUtils FileUtilitiesClass
 DirPath STRING(260)
-FileQ ZipQ
+FileQ ZipQueueType
 BaseFolder STRING(260)
 
 ! Create a new instance
@@ -219,7 +219,7 @@ DISPOSE(MyFileUtils)
 
 ```clarion
 MyFileUtils FileUtilitiesClass
-FileQ ZipQ
+FileQ ZipQueueType
 FilePath STRING(260)
 FolderPath STRING(260)
 BaseFolder STRING(260)
