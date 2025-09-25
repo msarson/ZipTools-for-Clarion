@@ -138,6 +138,14 @@ END
 
 The library uses two main options structures to control ZIP operations:
 
+### Key Features
+
+- **Multi-threaded compression** for improved performance
+- **Password protection** for secure archives
+- **Progress reporting** with customizable UI
+- **Adaptive compression** that optimizes based on file type
+- **Dynamic string handling** with the ZipStringUtilsClass for efficient path operations
+
 ### ZipOptionsType
 
 Used for creating ZIP files with `CreateZipFile`:
@@ -195,6 +203,7 @@ UnzipOpts.ShowProgress = TRUE                  ! Whether to show progress window
 - [ZipApiWrapper](docs/ZipApiWrapper.md) - Low-level wrapper for zLib functions
 - [ZipErrorClass](docs/ZipErrorClass.md) - Error handling functionality
 - [ZipFileUtilitiesClass](docs/ZipFileUtilitiesClass.md) - File system utilities
+- [ZipStringUtilsClass](docs/ZipStringUtilsClass.md) - Dynamic string handling and path manipulation utilities
 
 ## Dependencies
 

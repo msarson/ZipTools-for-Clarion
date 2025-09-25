@@ -24,11 +24,13 @@ ZipReaderClass.Construct PROCEDURE()
   CODE
   Self.ZipApi &= NEW ZipApiWrapper
   Self.Errors &= NEW ZipErrorClass
+  Self.StringUtils &= NEW ZipStringUtilsClass
   
 ZipReaderClass.Destruct  PROCEDURE()
   CODE
   Dispose(Self.ZipApi)
   Dispose(Self.Errors)
+  Dispose(Self.StringUtils)
 
 !--------------------------------------------------------------------
 ! ExtractZipFile - Extracts all files from a ZIP file to a folder
@@ -83,9 +85,8 @@ Window            WINDOW('Extracting Files'),AT(,,218,72),CENTER,GRAY,FONT('Sego
 
     OF EVENT:OpenWindow
       OutputDir = CLIP(Self.UnzipOptions.OutputFolder)
-      IF LEN(CLIP(OutputDir)) = 0 OR OutputDir[LEN(CLIP(OutputDir))] <> '\'
-        OutputDir = CLIP(OutputDir) & '\'
-      END
+      ! Use StringUtils to ensure trailing slash
+      OutputDir = SELF.StringUtils.EnsureTrailingSlash(OutputDir)
 
       csZipName = CLIP(Self.UnzipOptions.ZipName)
       unzFH = SELF.ZipApi.unzOpen(csZipName)
@@ -144,7 +145,7 @@ Window            WINDOW('Extracting Files'),AT(,,218,72),CENTER,GRAY,FONT('Sego
                 POST(EVENT:CloseWindow)
               END
             ELSE
-              DirectoryPath = FileUtility.PathOnly(FilePath)
+              DirectoryPath = SELF.StringUtils.GetPathOnly(FilePath)
               IF LEN(CLIP(DirectoryPath)) > 0
                 IF NOT FileUtility.CreateDirectoriesFromPath(DirectoryPath)
                   Self.Errors.SetError('ExtractZipFile: Failed to ensure directory exists [' & CLIP(DirectoryPath) & ']', CZ_ZIP_ERR_EXTRACT)
@@ -306,11 +307,9 @@ FileHandle                  LONG
     CurrentDir = ''
     SELF.ZipApi.GetCurrentDirectory(SIZE(CurrentDir), CurrentDir)
     IF LEN(CLIP(CurrentDir)) > 0
-      IF CurrentDir[LEN(CLIP(CurrentDir))] <> '\'
-        CurrentDir = CLIP(CurrentDir) & '\'
-      END
+      CurrentDir = SELF.StringUtils.EnsureTrailingSlash(CurrentDir)
       AbsolutePath = CLIP(CurrentDir) & SUB(csZipName, 3, LEN(CLIP(csZipName)) - 2)
-       Self.Trace('GetZipTotalSize: Converting relative path [' & csZipName & '] to absolute path [' & AbsolutePath & ']') 
+       Self.Trace('GetZipTotalSize: Converting relative path [' & csZipName & '] to absolute path [' & AbsolutePath & ']')
       csZipName = AbsolutePath
     END
   END
@@ -402,11 +401,9 @@ FileInfo  LIKE(UnzipFileInfoType)
     CurrentDir = ''
     SELF.ZipApi.GetCurrentDirectory(SIZE(CurrentDir), CurrentDir)
     IF LEN(CLIP(CurrentDir)) > 0
-      IF CurrentDir[LEN(CLIP(CurrentDir))] <> '\'
-        CurrentDir = CLIP(CurrentDir) & '\'
-      END
+      CurrentDir = SELF.StringUtils.EnsureTrailingSlash(CurrentDir)
       AbsolutePath = CLIP(CurrentDir) & SUB(csZipName, 3, LEN(CLIP(csZipName)) - 2)
-       Self.Trace('GetZipFileCount: Converting relative path [' & csZipName & '] to absolute path [' & AbsolutePath & ']') 
+       Self.Trace('GetZipFileCount: Converting relative path [' & csZipName & '] to absolute path [' & AbsolutePath & ']')
       csZipName = AbsolutePath
     END
   END
@@ -509,11 +506,9 @@ TimeWord                      USHORT   ! lower 16 bits
     CurrentDir = ''
     SELF.ZipApi.GetCurrentDirectory(SIZE(CurrentDir), CurrentDir)
     IF LEN(CLIP(CurrentDir)) > 0
-      IF CurrentDir[LEN(CLIP(CurrentDir))] <> '\'
-        CurrentDir = CLIP(CurrentDir) & '\'
-      END
+      CurrentDir = SELF.StringUtils.EnsureTrailingSlash(CurrentDir)
       AbsolutePath = CLIP(CurrentDir) & SUB(csZipName, 3, LEN(CLIP(csZipName)) - 2)
-       Self.Trace('GetZipContents: Converting relative path [' & csZipName & '] to absolute path [' & AbsolutePath & ']') 
+       Self.Trace('GetZipContents: Converting relative path [' & csZipName & '] to absolute path [' & AbsolutePath & ']')
       csZipName = AbsolutePath
     END
   END
@@ -578,7 +573,14 @@ TimeWord                      USHORT   ! lower 16 bits
 
    
    ! Check if this is a directory entry (ends with '/' or '\')
-    ContentsQueue.IsFolder = CHOOSE((INSTRING('/', FileName, -1, LEN(CLIP(FileName))) = LEN(CLIP(FileName)) OR INSTRING('\', FileName, -1, LEN(CLIP(FileName))) = LEN(CLIP(FileName))), 1, 0)
+   ! First normalize the path to ensure consistent handling
+   SELF.StringUtils.Start()
+   SELF.StringUtils.SetValue(FileName)
+   ! Convert all backslashes to forward slashes for consistent checking
+   SELF.StringUtils.ReplaceAll('\', '/')
+   ! Check if it ends with a slash
+   ContentsQueue.IsFolder = Self.StringUtils.EndsWith('\') 
+
    
     ADD(ContentsQueue)
      Self.Trace('GetZipContents: Added entry to queue: [' & FileName & ']') 

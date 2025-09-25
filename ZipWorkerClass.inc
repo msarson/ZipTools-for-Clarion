@@ -11,6 +11,7 @@
     INCLUDE('ZipAPIWrapper.inc'),ONCE
     INCLUDE('ZipFileUtilitiesClass.inc'),ONCE
     INCLUDE('ZipErrorClass.inc'),ONCE
+    INCLUDE('ZipStringUtilsClass.inc'),ONCE
 
 !*************************************************************************
 ! Thread data class for passing data to the thread
@@ -19,6 +20,7 @@ ZipWorkerClass   CLASS,TYPE,THREAD,MODULE('ZipWorkerClass.clw'),LINK('ZipWorkerC
 ZipApi        &ZipAPIWrapper  ! Reference to the ZIP API wrapper
 Writer        &ZipWriterClass ! Reference to the ZIP writer class
 Errors        &ZipErrorClass  ! Reference to the error handling class
+StringUtils   &ZipStringUtilsClass ! Reference to the string utilities class
 ZipHandle           LONG        ! Handle to the ZIP file
 ErrorCount          LONG        ! Number of errors encountered
 CallerThread        LONG        ! Thread ID of the caller

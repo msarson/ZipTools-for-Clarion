@@ -12,6 +12,7 @@
     INCLUDE('ZipAPIWrapper.inc'),ONCE
     INCLUDE('ZipTypes.inc'),ONCE
     INCLUDE('ZipErrorClass.inc'),ONCE
+    INCLUDE('ZipStringUtilsClass.inc'),ONCE
 
 !*************************************************************************
 ! ZipWriterClass - Class for ZIP writing and compression operations
@@ -19,6 +20,7 @@
 ZipWriterClass   CLASS,TYPE,THREAD,MODULE('ZipWriterClass.clw'),LINK('ZipWriterClass.clw',_ZIPLinkMode_),DLL(_ZIPDllMode_)
 ZipApi           &ZipAPIWrapper  ! Reference to the ZIP API wrapper
 Errors           &ZipErrorClass  ! Reference to the error handling class
+StringUtils      &ZipStringUtilsClass  ! Reference to the string utilities class
 ZipCompBuf       &STRING         ! Fixed-size buffer for compressed data
 ZipCompCap       ULONG           ! Capacity of compressed buffer (fixed at initialization)
 Options          LIKE(ZipOptionsType)

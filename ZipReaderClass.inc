@@ -13,6 +13,7 @@
     INCLUDE('ZipTypes.inc'),ONCE
     INCLUDE('ZipFileUtilitiesClass.inc'),ONCE
     INCLUDE('ZipErrorClass.inc'),ONCE
+    INCLUDE('ZipStringUtilsClass.inc'),ONCE
 
 !*************************************************************************
 ! ZipReaderClass - Class for ZIP reading and extraction operations
@@ -20,6 +21,7 @@
 ZipReaderClass   CLASS,TYPE,THREAD,MODULE('ZipReaderClass.clw'),LINK('ZipReaderClass.clw',_ZIPLinkMode_),DLL(_ZIPDllMode_)
 ZipApi           &ZipAPIWrapper  ! Reference to the ZIP API wrapper
 Errors           &ZipErrorClass  ! Reference to the error handling class
+StringUtils      &ZipStringUtilsClass  ! Reference to the string utilities class
 UnzipOptions     LIKE(UnzipOptionsType)
 
 ! Constructor and Destructor

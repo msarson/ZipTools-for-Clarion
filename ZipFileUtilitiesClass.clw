@@ -4,11 +4,13 @@
    END
 
 ZipFileUtilitiesClass.CONSTRUCT      PROCEDURE()
-   CODE
-    Self.ZipApi &= NEW ZipAPIWrapper
+  CODE
+   Self.ZipApi &= NEW ZipAPIWrapper
+   Self.StringUtils &= NEW ZipStringUtilsClass
 ZipFileUtilitiesClass.DESTRUCT       PROCEDURE()
    CODE
    DISPOSE(Self.ZipApi)
+   DISPOSE(Self.StringUtils)
 
 ZipFileUtilitiesClass.SelectFiles    PROCEDURE(*ZipQueueType FileQueue)
 Found                           CSTRING(10000)
@@ -273,42 +275,14 @@ SlashPos                            LONG,AUTO
   RETURN FileCount
 
 ZipFileUtilitiesClass.PathOnly    PROCEDURE(<STRING fPath>)
-i                       LONG
-pLen                    LONG
-FilePath                CSTRING(FILE:MaxFilePath+1)
-NormalizedPath          CSTRING(FILE:MaxFilePath+1)
   CODE
   ! Handle empty or omitted path
   IF OMITTED(fPath) OR SIZE(fPath) = 0
     RETURN ''
   END
-  
-  ! Normalize path by replacing forward slashes with backslashes
-  NormalizedPath = fPath
-  LOOP WHILE INSTRING('/', NormalizedPath)
-    NormalizedPath = SUB(NormalizedPath, 1, INSTRING('/', NormalizedPath)-1) & '\' & |
-      SUB(NormalizedPath, INSTRING('/', NormalizedPath)+1, LEN(CLIP(NormalizedPath)))
-  END
-  
-  ! Replace any double backslashes with single backslashes
-  LOOP WHILE INSTRING('\\', NormalizedPath)
-    NormalizedPath = SUB(NormalizedPath, 1, INSTRING('\\', NormalizedPath)-1) & '\' & |
-      SUB(NormalizedPath, INSTRING('\\', NormalizedPath)+2, LEN(CLIP(NormalizedPath)))
-  END
-    
-  FilePath = NormalizedPath
-  pLen = LEN(CLIP(FilePath))
-    
-  ! Check for Windows style backslash "\"
-  LOOP i = pLen TO 1 BY -1
-    IF FilePath[i] = '\'                                ! found the last '\'
-      ! Ensure the returned path doesn't end with a backslash
-      RETURN SUB(FilePath, 1, i-1)
-    END
-  END
-    
-  ! No path separator found, return empty string
-  RETURN ''
+   
+  ! Use the StringUtils class to get the path only
+  RETURN SELF.StringUtils.GetPathOnly(fPath)
   
 !--------------------------------------------------------------------
 ! FileNameOnly - Extracts just the file name from a file path
@@ -320,51 +294,19 @@ NormalizedPath          CSTRING(FILE:MaxFilePath+1)
 !   File name without the directory path
 !--------------------------------------------------------------------
 ZipFileUtilitiesClass.FileNameOnly    PROCEDURE(<STRING fPath>)
-i                           LONG
-pLen                        LONG
-FilePath                    CSTRING(FILE:MaxFilePath+1)
-NormalizedPath              CSTRING(FILE:MaxFilePath+1)
   CODE
   ! Handle empty or omitted path
   IF OMITTED(fPath) OR SIZE(fPath) = 0
     RETURN ''
   END
     
-  ! Normalize path by replacing forward slashes with backslashes
-  NormalizedPath = fPath
-  LOOP WHILE INSTRING('/', NormalizedPath)
-    NormalizedPath = SUB(NormalizedPath, 1, INSTRING('/', NormalizedPath)-1) & '\' & |
-      SUB(NormalizedPath, INSTRING('/', NormalizedPath)+1, LEN(CLIP(NormalizedPath)))
-  END
-  
-  ! Replace any double backslashes with single backslashes
-  LOOP WHILE INSTRING('\\', NormalizedPath)
-    NormalizedPath = SUB(NormalizedPath, 1, INSTRING('\\', NormalizedPath)-1) & '\' & |
-      SUB(NormalizedPath, INSTRING('\\', NormalizedPath)+2, LEN(CLIP(NormalizedPath)))
-  END
-  
-  FilePath = NormalizedPath
-  pLen = LEN(CLIP(FilePath))
-  
-  ! Check for Windows style backslash "\"
-  LOOP i = pLen TO 1 BY -1
-    IF FilePath[i] = '\'                                ! found the last '\'
-      RETURN SUB(FilePath, i+1, pLen-i)
-    END
-  END
-
-  ! No path separator found, return the entire string
-  RETURN FilePath  
+  ! Use the StringUtils class to get the file name only
+  RETURN SELF.StringUtils.GetFileNameOnly(fPath)
 
 ZipFileUtilitiesClass.GetFileExtension   PROCEDURE(STRING FileName)
-Pos                         LONG
   CODE
-  Pos = INSTRING('.', FileName, -1, LEN(CLIP(FileName)))
-  IF Pos > 0
-    RETURN UPPER(FileName[Pos : LEN(CLIP(FileName))])
-  ELSE
-    RETURN ''
-  END
+  ! Use the StringUtils class to get the file extension
+  RETURN SELF.StringUtils.GetFileExtension(FileName)
 
 !--------------------------------------------------------------------
 ! EnsureDirectoryExists - Recursively creates directories in a path if they don't exist
@@ -382,7 +324,6 @@ i                                   LONG
 LastError                           LONG
 Success                             BOOL(TRUE)
 TempPath                            CSTRING(FILE:MaxFilePath+1)
-NormalizedPath                      CSTRING(FILE:MaxFilePath+1)
 RetryCount                          LONG(0)
 MaxRetries                          LONG(3)
 DirectoryPathCString                CSTRING(FILE:MaxFilePath+1)
@@ -418,26 +359,8 @@ CleanPath                           STRING(FILE:MaxFilePath+1)
   ! Convert STRING parameter to CSTRING
   DirectoryPathCString = CleanPath
   
-  ! Normalize path by replacing forward slashes with backslashes
-  NormalizedPath = DirectoryPathCString
-  LOOP WHILE INSTRING('/', NormalizedPath)
-    NormalizedPath = SUB(NormalizedPath, 1, INSTRING('/', NormalizedPath)-1) & '\' & |
-      SUB(NormalizedPath, INSTRING('/', NormalizedPath)+1, LEN(CLIP(NormalizedPath)))
-  END
-  
-  ! Replace any double backslashes with single backslashes
-  LOOP WHILE INSTRING('\\', NormalizedPath)
-    NormalizedPath = SUB(NormalizedPath, 1, INSTRING('\\', NormalizedPath)-1) & '\' & |
-      SUB(NormalizedPath, INSTRING('\\', NormalizedPath)+2, LEN(CLIP(NormalizedPath)))
-  END
-   
-  ! Make a copy of the normalized path to work with
-  TempPath = CLIP(NormalizedPath)
-   
-  ! Ensure the path ends with a backslash for directory creation
-  IF TempPath[LEN(CLIP(TempPath))] <> '\'
-    TempPath = CLIP(TempPath) & '\'
-  END
+  ! Normalize path and ensure it ends with a backslash
+  TempPath = SELF.StringUtils.EnsureTrailingSlash(SELF.StringUtils.NormalizePath(DirectoryPathCString))
    
   ! Start with the drive root (e.g., "C:\")
   CurrentPath = SUB(TempPath, 1, 3)

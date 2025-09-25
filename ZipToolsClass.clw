@@ -107,6 +107,7 @@ ZipToolsClass.Construct   PROCEDURE()
   Self.Writer &= NEW ZipWriterClass
   Self.Reader &= NEW ZipReaderClass
   Self.Errors &= NEW ZipErrorClass
+  Self.StringUtils &= NEW ZipStringUtilsClass
 
 !--------------------------------------------------------------------
 ! Trace - Outputs debug messages if debug mode is enabled
@@ -135,6 +136,7 @@ ZipToolsClass.Destruct    PROCEDURE()
   DISPOSE(SELF.Writer)
   DISPOSE(SELF.Reader)
   DISPOSE(SELF.Errors)
+  DISPOSE(SELF.StringUtils)
 
 !--------------------------------------------------------------------
 ! Reset - Resets the class state for reuse
@@ -153,12 +155,14 @@ ZipToolsClass.Reset    PROCEDURE()
  DISPOSE(SELF.Writer)
  DISPOSE(SELF.Reader)
  DISPOSE(SELF.Errors)
+ DISPOSE(SELF.StringUtils)
  
  ! Recreate all objects
  Self.ZipApi &= NEW ZipApiWrapper
  Self.Writer &= NEW ZipWriterClass
  Self.Reader &= NEW ZipReaderClass
  Self.Errors &= NEW ZipErrorClass
+ Self.StringUtils &= NEW ZipStringUtilsClass
  
  ! Reset compression settings to defaults
  SELF.CompressionMethod = CZ_Z_DEFLATED
@@ -281,7 +285,7 @@ TotalFileSize               ULONG
   FileToZip = CLIP(Self.Options.ZipName)
   IF FileToZip <> ''
     !Ensures full path exists
-    zipPath = FileUtility.PathOnly(FileToZip)
+    zipPath = Self.StringUtils.GetPathOnly(FileToZip)
     IF zipPath <> ''
       FileUtility.CreateDirectoriesFromPath(zipPath)
     END
@@ -728,12 +732,8 @@ FileExt                 CSTRING(10)  ! For storing file extension
     ! 5. Otherwise ? use level 6 (balanced default)
     !---------------------------------------------------------------------------
     
-    ! Get file extension
-    FileExt = FileUtility.GetFileExtension(ThreadContext.FileQueue.ZipFileName)
-    IF FileExt <> ''
-      ! Remove the dot from the extension
-      FileExt = SUB(FileExt, 2, LEN(CLIP(FileExt))-1)
-    END
+    ! Get file extension using StringUtils
+    FileExt = ThreadContext.StringUtils.GetFileExtension(ThreadContext.FileQueue.ZipFileName)
     
     ! Default compression level (balanced)
     CompressionLevel = CZ_Z_DEFAULT_LEVEL  ! Level 6
@@ -847,11 +847,11 @@ FileExt                 CSTRING(10)  ! For storing file extension
      IF SUB(ThreadContext.FileQueue.ZipFileName,1,LEN(CLIP(ThreadContext.BaseFolder))) = CLIP(ThreadContext.BaseFolder)
        RelativePath = SUB(ThreadContext.FileQueue.ZipFileName, LEN(CLIP(ThreadContext.BaseFolder))+1, LEN(CLIP(ThreadContext.FileQueue.ZipFileName)) - LEN(CLIP(ThreadContext.BaseFolder)))
      ELSE
-       RelativePath = FileUtility.FileNameOnly(ThreadContext.FileQueue.ZipFileName)
+       RelativePath = ThreadContext.StringUtils.GetFileNameOnly(ThreadContext.FileQueue.ZipFileName)
      END
    ELSE
      IF INSTRING(':', ThreadContext.FileQueue.ZipFileName) > 0 OR ThreadContext.FileQueue.ZipFileName[1:1] = '\'
-       RelativePath = FileUtility.FileNameOnly(ThreadContext.FileQueue.ZipFileName)
+       RelativePath = ThreadContext.StringUtils.GetFileNameOnly(ThreadContext.FileQueue.ZipFileName)
      ELSE
        RelativePath = ThreadContext.FileQueue.ZipFileName
      END

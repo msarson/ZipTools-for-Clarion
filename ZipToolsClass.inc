@@ -16,6 +16,7 @@
   INCLUDE('ZipWorkerClass.inc'),ONCE
   INCLUDE('ZipWriterClass.inc'),ONCE
   INCLUDE('ZipReaderClass.inc'),ONCE
+  INCLUDE('ZipStringUtilsClass.inc'),ONCE
 
 
 !*************************************************************************
@@ -26,6 +27,7 @@ ZipApi          &ZipAPIWrapper  ! Reference to the ZIP API wrapper
 Writer          &ZipWriterClass ! Reference to the ZIP writer class
 Reader          &ZipReaderClass ! Reference to the ZIP reader class
 Errors          &ZipErrorClass  ! Reference to the error handling class
+StringUtils     &ZipStringUtilsClass ! Reference to the string utilities class
 ! Helper methods for thread management
 
 ! Constructor and Destructor

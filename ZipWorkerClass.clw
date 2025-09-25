@@ -31,6 +31,7 @@ ZipWorkerClass.Construct PROCEDURE()
   Self.ZipApi &= NEW ZipApiWrapper
   Self.Writer &= NEW ZipWriterClass
   Self.Errors &= NEW ZipErrorClass
+  Self.StringUtils &= NEW ZipStringUtilsClass
   
 ZipWorkerClass.Destruct  PROCEDURE()
   CODE
@@ -41,6 +42,7 @@ ZipWorkerClass.Destruct  PROCEDURE()
   Dispose(Self.ZipApi)
   Dispose(Self.Writer)
   Dispose(Self.Errors)
+  Dispose(Self.StringUtils)
   ! Call Kill to clean up remaining resources (buffers are already disposed above)
   SELF.Kill()
 
@@ -200,6 +202,7 @@ TargetSize ULONG             ! Target size for this thread
   DISPOSE(Self.Errors)
   DISPOSE(Self.Writer)
   DISPOSE(Self.ZipApi)
+  DISPOSE(Self.StringUtils)
   
   ! Ensure buffers are properly disposed and recreated
   IF NOT Self.RawBuf &= NULL
@@ -222,6 +225,7 @@ TargetSize ULONG             ! Target size for this thread
   Self.Errors &= NEW ZipErrorClass
   Self.Writer &= NEW ZipWriterClass
   Self.ZipApi &= NEW ZipApiWrapper
+  Self.StringUtils &= NEW ZipStringUtilsClass
   
   ! Copy options from the base class
   Self.Options.ZipName = zipBase.Options.ZipName

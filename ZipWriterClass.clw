@@ -27,12 +27,14 @@ ZipWriterClass.Construct PROCEDURE()
   
   Self.ZipApi &= NEW ZipApiWrapper
   Self.Errors &= NEW ZipErrorClass
+  Self.StringUtils &= NEW ZipStringUtilsClass
   
 ZipWriterClass.Destruct  PROCEDURE()
   CODE
   DISPOSE(Self.ZipCompBuf)
   Dispose(Self.ZipApi)
   Dispose(Self.Errors)
+  Dispose(Self.StringUtils)
 
 !--------------------------------------------------------------------
 ! WritePrecompressedToZip - Writes precompressed data to a ZIP file
@@ -68,11 +70,15 @@ WindowBits    LONG                   ! Added for compression parameters
 MemLevel      LONG                   ! Added for compression parameters
 Strategy      LONG                   ! Added for compression parameters
   CODE
-  ! Normalize entry name (forward slashes only)
-  LOOP WHILE INSTRING('\', ZipEntryName)
-    ZipEntryName = SUB(ZipEntryName,1,INSTRING('\',ZipEntryName)-1) & '/' & |
-                   SUB(ZipEntryName,INSTRING('\',ZipEntryName)+1,LEN(CLIP(ZipEntryName)))
-  END
+  ! Normalize entry name (forward slashes only) using StringUtils
+  ! First normalize to backslashes
+  ZipEntryName = SELF.StringUtils.NormalizePath(ZipEntryName)
+  
+  ! Then convert all backslashes to forward slashes for ZIP format
+  SELF.StringUtils.Start()
+  SELF.StringUtils.SetValue(ZipEntryName)
+  SELF.StringUtils.ReplaceAll('\', '/')
+  ZipEntryName = SELF.StringUtils.GetValue()
 
   ! Decide method: 0 = STORE, 8 = DEFLATED
   IF UseStoreMethod

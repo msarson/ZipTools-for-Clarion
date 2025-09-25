@@ -1,9 +1,11 @@
     INCLUDE('ZipTypes.inc'),ONCE
     INCLUDE('ZipEquates.inc'),ONCE
     INCLUDE('ZipAPIWrapper.inc'),ONCE
+    INCLUDE('ZipStringUtilsClass.inc'),ONCE
 
 ZipFileUtilitiesClass   CLASS,TYPE,MODULE('ZipFileUtilitiesClass.clw'),LINK('ZipFileUtilitiesClass.clw',_ZIPLinkMode_),DLL(_ZIPDllMode_)
 ZipApi          &ZipAPIWrapper  ! Reference to the ZIP API wrapper
+StringUtils     &ZipStringUtilsClass  ! Reference to the string utilities class
 !------------------------
 CONSTRUCT      PROCEDURE()
 DESTRUCT       PROCEDURE()
