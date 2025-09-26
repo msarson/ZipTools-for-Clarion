@@ -87,7 +87,7 @@ Strategy      LONG                   ! Added for compression parameters
     MethodToUse = CZ_Z_DEFLATED
   END
 
-  HasPassword = CHOOSE(LEN(CLIP(Self.Options.Password)) > 0, TRUE, FALSE)
+  HasPassword = CHOOSE(Self.Options.Password, TRUE, FALSE)
 
   !===============================================================
   ! Original file path is no longer required since we're using the buffer directly

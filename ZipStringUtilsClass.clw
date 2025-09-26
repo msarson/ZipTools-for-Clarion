@@ -117,7 +117,7 @@ ZipStringUtilsClass.NormalizePath PROCEDURE(STRING path)
 FilePath STRING(FILE:MaxFilePath)
   CODE
   ! Handle empty path
-  IF path = ''
+  IF ~path
     RETURN ''
   END
 
@@ -160,7 +160,7 @@ pLen     LONG
 FilePath STRING(FILE:MaxFilePath)
   CODE
   ! Handle empty path
-  IF path = ''
+  IF ~path
     RETURN ''
   END
 
@@ -184,7 +184,7 @@ pLen     LONG
 FilePath STRING(FILE:MaxFilePath)
   CODE
   ! Handle empty path
-  IF path = ''
+  IF ~path
     RETURN ''
   END
 

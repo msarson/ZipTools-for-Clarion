@@ -133,7 +133,7 @@ Window            WINDOW('Extracting Files'),AT(,,218,72),CENTER,GRAY,FONT('Sego
         CLEAR(FileInfo)
         Result = SELF.ZipApi.unzGetCurrentFileInfo(unzFH, FileInfo, FileName, SIZE(FileName), 0, 0, 0, 0)
         IF Result = CZ_Z_OK
-          IF LEN(CLIP(FileName))
+          IF FileName
             FilePath = OutputDir & FileName
             Self.Trace('ExtractZipFile: Processing [' & CLIP(FileName) & ']')
 
@@ -146,7 +146,7 @@ Window            WINDOW('Extracting Files'),AT(,,218,72),CENTER,GRAY,FONT('Sego
               END
             ELSE
               DirectoryPath = SELF.StringUtils.GetPathOnly(FilePath)
-              IF LEN(CLIP(DirectoryPath)) > 0
+              IF DirectoryPath
                 IF NOT FileUtility.CreateDirectoriesFromPath(DirectoryPath)
                   Self.Errors.SetError('ExtractZipFile: Failed to ensure directory exists [' & CLIP(DirectoryPath) & ']', CZ_ZIP_ERR_EXTRACT)
                   ClosingWindow = 1
@@ -156,7 +156,7 @@ Window            WINDOW('Extracting Files'),AT(,,218,72),CENTER,GRAY,FONT('Sego
 
               ! Handle encrypted files
               IF BAND(FileInfo.flag,1) <> 0
-                IF LEN(CLIP(Self.UnzipOptions.Password)) = 0
+                IF ~Self.UnzipOptions.Password
                   Self.Errors.SetError('ExtractZipFile: Encrypted file, no password provided [' & CLIP(FileName) & ']', CZ_ZIP_ERR_INVALID_PARAMETER)
                   ClosingWindow = 1
                   POST(EVENT:CloseWindow)
@@ -306,7 +306,7 @@ FileHandle                  LONG
    ! Convert relative path to absolute
     CurrentDir = ''
     SELF.ZipApi.GetCurrentDirectory(SIZE(CurrentDir), CurrentDir)
-    IF LEN(CLIP(CurrentDir)) > 0
+    IF CurrentDir
       CurrentDir = SELF.StringUtils.EnsureTrailingSlash(CurrentDir)
       AbsolutePath = CLIP(CurrentDir) & SUB(csZipName, 3, LEN(CLIP(csZipName)) - 2)
        Self.Trace('GetZipTotalSize: Converting relative path [' & csZipName & '] to absolute path [' & AbsolutePath & ']')
@@ -400,7 +400,7 @@ FileInfo  LIKE(UnzipFileInfoType)
    ! Convert relative path to absolute
     CurrentDir = ''
     SELF.ZipApi.GetCurrentDirectory(SIZE(CurrentDir), CurrentDir)
-    IF LEN(CLIP(CurrentDir)) > 0
+    IF CurrentDir
       CurrentDir = SELF.StringUtils.EnsureTrailingSlash(CurrentDir)
       AbsolutePath = CLIP(CurrentDir) & SUB(csZipName, 3, LEN(CLIP(csZipName)) - 2)
        Self.Trace('GetZipFileCount: Converting relative path [' & csZipName & '] to absolute path [' & AbsolutePath & ']')
@@ -440,7 +440,7 @@ FileInfo  LIKE(UnzipFileInfoType)
     END
    
    ! Skip empty file names or single slashes
-    IF LEN(CLIP(FileName)) = 0 OR CLIP(FileName) = '\' OR CLIP(FileName) = '/'
+    IF ~FileName OR CLIP(FileName) = '\' OR CLIP(FileName) = '/'
        Self.Trace('GetZipFileCount: Skipping empty or root entry: [' & FileName & ']') 
       Result = SELF.ZipApi.unzGoToNextFile(unzFH)
       CYCLE
@@ -505,7 +505,7 @@ TimeWord                      USHORT   ! lower 16 bits
    ! Convert relative path to absolute
     CurrentDir = ''
     SELF.ZipApi.GetCurrentDirectory(SIZE(CurrentDir), CurrentDir)
-    IF LEN(CLIP(CurrentDir)) > 0
+    IF CurrentDir
       CurrentDir = SELF.StringUtils.EnsureTrailingSlash(CurrentDir)
       AbsolutePath = CLIP(CurrentDir) & SUB(csZipName, 3, LEN(CLIP(csZipName)) - 2)
        Self.Trace('GetZipContents: Converting relative path [' & csZipName & '] to absolute path [' & AbsolutePath & ']')
@@ -546,7 +546,7 @@ TimeWord                      USHORT   ! lower 16 bits
     END
    
    ! Skip empty file names or single slashes
-    IF LEN(CLIP(FileName)) = 0 OR CLIP(FileName) = '\' OR CLIP(FileName) = '/'
+    IF ~FileName OR CLIP(FileName) = '\' OR CLIP(FileName) = '/'
        Self.Trace('GetZipContents: Skipping empty or root entry: [' & FileName & ']') 
       Result = SELF.ZipApi.unzGoToNextFile(unzFH)
       CYCLE

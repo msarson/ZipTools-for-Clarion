@@ -283,10 +283,10 @@ TotalFileSize               ULONG
   END
   Self.Trace('CreateZipFile: Start') 
   FileToZip = CLIP(Self.Options.ZipName)
-  IF FileToZip <> ''
+  IF FileToZip
     !Ensures full path exists
     zipPath = Self.StringUtils.GetPathOnly(FileToZip)
-    IF zipPath <> ''
+    IF zipPath
       FileUtility.CreateDirectoriesFromPath(zipPath)
     END
     

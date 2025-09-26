@@ -105,7 +105,7 @@ CurrentPath                     CSTRING(File:MaxFilePath + 1)  ! To store curren
   
   FolderPath = SELF.SelectFolder('Select a folder to add to zip', 'All Files | *.* ')
   ! Use directory dialog for folder selection
-  IF FolderPath <> ''
+  IF FolderPath
     FolderSelected = TRUE
     
     ! Recursively scan the folder and add all files to the queue
@@ -331,7 +331,7 @@ CleanPath                           STRING(FILE:MaxFilePath+1)
   CODE
    
   ! If path is empty, return success
-  IF LEN(CLIP(DirectoryPath)) = 0
+  IF ~DirectoryPath
     RETURN TRUE
   END
   
@@ -352,7 +352,7 @@ CleanPath                           STRING(FILE:MaxFilePath+1)
   
   ! If PathOnly returned empty but original path wasn't empty,
   ! it might be just a filename or a relative path without backslashes
-  IF CleanPath = '' AND DirectoryPath <> ''
+  IF ~CleanPath AND DirectoryPath
     CleanPath = DirectoryPath
   END
   
