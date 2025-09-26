@@ -327,8 +327,9 @@ TempPath                            CSTRING(FILE:MaxFilePath+1)
 RetryCount                          LONG(0)
 MaxRetries                          LONG(3)
 DirectoryPathCString                CSTRING(FILE:MaxFilePath+1)
-CleanPath                           STRING(FILE:MaxFilePath+1)
-  CODE
+CleanPath                           STRING(FILE:MaxFilePath)
+CheckPath                           STRING(FILE:MaxFilePath)
+Pos                            LONG
    
   ! If path is empty, return success
   IF ~DirectoryPath
@@ -340,12 +341,12 @@ CleanPath                           STRING(FILE:MaxFilePath+1)
   CleanPath = DirectoryPath
 
   ! Find last backslash
-  pos# = INSTRING('\', DirectoryPath, -1, LEN(CLIP(DirectoryPath)))
-  IF pos# > 0
+  Pos = INSTRING('\', DirectoryPath, -1, LEN(CLIP(DirectoryPath)))
+  IF Pos > 0
     ! Substring after the last backslash
-    tail# = SUB(CLIP(DirectoryPath), pos#+1, LEN(CLIP(DirectoryPath))-pos#)
+    CheckPath = SUB(CLIP(DirectoryPath), Pos+1, LEN(CLIP(DirectoryPath))-Pos)
     ! Does it contain a dot?
-    IF INSTRING('.', tail#, 1, 1) > 0
+    IF INSTRING('.', CheckPath, 1, 1) > 0
       CleanPath = SELF.PathOnly(DirectoryPath)
     END
   END
