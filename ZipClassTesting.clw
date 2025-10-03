@@ -283,12 +283,7 @@ QuickWindow         WINDOW('ZIP Test Interface'),AT(,,500,420),CENTER,GRAY,IMM,A
 
   CLOSE(QuickWindow)
   
-!---------------------------------------------------------------------------
-DefineListboxStyle    ROUTINE
-!|
-!| This routine create all the styles to be shared in this window
-!| It`s called after the window open
-!|
+
 !---------------------------------------------------------------------------
 ZIPThem   ROUTINE
   DATA

@@ -211,7 +211,9 @@ This repository includes the required zLib DLL files:
 - `zlib1.dll` - Standard zLib library
 - `zlibwapi.dll` - Windows API version of zLib
 
-These DLLs were compiled from the latest zLib version and are ready to use with the library. The library now dynamically loads these DLLs at runtime, which provides better compatibility and flexibility when deploying your application.
+These DLLs were compiled from the latest zLib version and are ready to use with the library. The library dynamically loads these DLLs at runtime, which provides better compatibility and flexibility when deploying your application. The core zLib functions will first try to use zlib1.dll if available, and fall back to zlibwapi.dll if needed.
+
+This dynamic loading approach was specifically designed to ensure backward compatibility with third-party tools (particularly from CapeSoft) that ship with their own versions of the zlib DLLs. This means you can use ZipTools alongside other Clarion tools without DLL conflicts.
 
 ## Installation and Usage
 
@@ -265,7 +267,9 @@ To add ZipToolsClass to a hand-coded project (with no APP and hence no Global Ex
 
 ### Important Note About DLL Versions
 
-This library contains an updated version of zlib1.dll and zlibwapi.dll. Some third-party tools (like StringTheory) contain an earlier version of these DLLs in the clarion\accessories\bin directory. If you are adding this library to your application, be aware that the shipping DLLs may be overwritten by the older version when deploying your application.
+This library contains an updated version of zlib1.dll and zlibwapi.dll. Some third-party tools (like StringTheory from CapeSoft) contain an earlier version of these DLLs in the clarion\accessories\bin directory. If you are adding this library to your application, be aware that the shipping DLLs may be overwritten by the older version when deploying your application.
+
+The good news is that the library will work with either version of the DLLs as it dynamically loads them at runtime. This eliminates the need for the static library files (zlib1.lib and zlibwapi.lib) that were previously required, and ensures compatibility with environments where different versions of the zlib DLLs might be present.
 
 ### Testing
 
@@ -279,7 +283,7 @@ The repository includes a ZipClassTesting solution that can be used for testing 
 - Performance improvements in newer versions won't be present
 - Bug fixes in newer versions might affect behavior in edge cases
 
-If you're using Capesoft StringTheory in the same application, you'll likely be able to use both libraries without conflicts, but comprehensive testing is recommended to ensure compatibility in your specific use case.
+The dynamic loading approach in ZipApiWrapper has been specifically designed to work with these older versions of the DLLs. If you're using Capesoft StringTheory in the same application, you can use both libraries without conflicts, as ZipTools will adapt to the available DLL versions.
 
 ## zlib Library Attribution
 

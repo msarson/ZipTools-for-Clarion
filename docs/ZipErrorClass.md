@@ -109,7 +109,7 @@ The `ZipErrorClass` handles the following error codes (defined in ZipEquates.inc
 
 ## Debug Logging
 
-When debug mode is enabled (czDebugOn equate is set to 1), the `ZipErrorClass` logs error messages through the TraceError method. This can be useful for troubleshooting issues with ZIP operations.
+When debug mode is enabled (CZ_TRACEON equate is set to 1 in ZipEquates.inc), the `ZipErrorClass` logs error messages through the TraceError method. This can be useful for troubleshooting issues with ZIP operations.
 
 Debug messages include:
 - Error codes

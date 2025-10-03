@@ -14,7 +14,6 @@
   INCLUDE('ZipToolsClass.inc'),ONCE
 
 !====================================================================
-czDebugOn     EQUATE(1)
 
 !--------------------------------------------------------------------
 ! ZipWriterClass methods
@@ -207,7 +206,7 @@ NewCap                              ULONG     ! new capacity
   END
 
   ! Open file
-  FileHandle = SELF.ZipApi.CreateFile(FileName, CZ_GENERIC_READ, CZ_FILE_SHARE_READ,,CZ_OPEN_EXISTING, 0, 0)
+  FileHandle = SELF.ZipApi.CreateFile(FileName, CZ_GENERIC_READ, CZ_FILE_SHARE_READ,,CZ_OPEN_EXISTING, 0, CZ_NULL)
   IF FileHandle = CZ_INVALID_HANDLE_VALUE
     Self.Errors.SetError('CompressFileToBuffer: CreateFile failed for ' & CLIP(FileName), CZ_ZIP_ERR_FILE_OPEN)
     RETURN CZ_ZIP_ERR_FILE_OPEN
@@ -225,7 +224,7 @@ NewCap                              ULONG     ! new capacity
 
   LOOP
     ! Read from file
-    IF SELF.ZipApi.ReadFile(FileHandle, ReadBuf, SIZE(ReadBuf), BytesRead, 0) = 0
+    IF SELF.ZipApi.ReadFile(FileHandle, ReadBuf, SIZE(ReadBuf), BytesRead, CZ_NULL) = 0
       Self.Errors.SetError('CompressFileToBuffer: ReadFile failed file=' & CLIP(FileName) , CZ_ZIP_ERR_FILE_READ)
       SELF.ZipApi.deflateEnd(zs)
       SELF.ZipApi.CloseFile(FileHandle)
@@ -262,7 +261,7 @@ NewCap                              ULONG     ! new capacity
         Self.ZipCompBuf &= NewBuf
         Self.ZipCompCap  = NewCap
 
-        COMPILE('TraceOn',czDebugOn=1); SELF.Trace('CompressFileToBuffer: Buffer resized to ' & NewCap & ' bytes for ' & CLIP(FileName)) !TraceOn
+        COMPILE('TraceOn',CZ_TRACEON=1); SELF.Trace('CompressFileToBuffer: Buffer resized to ' & NewCap & ' bytes for ' & CLIP(FileName)) !TraceOn
       END
 
       zs.next_out  = ADDRESS(Self.ZipCompBuf) + OutCompSize
@@ -304,7 +303,7 @@ pos         ULONG
   crc     = 0
   czFileName = FileName
 
-  FileHandle = SELF.ZipApi.CreateFile(czFileName, CZ_GENERIC_READ, CZ_FILE_SHARE_READ,,CZ_OPEN_EXISTING, 0, 0)
+  FileHandle = SELF.ZipApi.CreateFile(czFileName, CZ_GENERIC_READ, CZ_FILE_SHARE_READ,,CZ_OPEN_EXISTING, 0, CZ_NULL)
   IF FileHandle = CZ_INVALID_HANDLE_VALUE
     Self.Errors.SetError('ReadFileToBuffer: Invalid Handle on CreateFile', CZ_ZIP_ERR_FILE_OPEN)
     RETURN CZ_ZIP_ERR_FILE_OPEN
@@ -312,7 +311,7 @@ pos         ULONG
 
   pos = 1
   LOOP
-    IF SELF.ZipApi.ReadFile(FileHandle, BufRef[pos], MaxSize - OutSize, BytesRead, 0) = 0
+    IF SELF.ZipApi.ReadFile(FileHandle, BufRef[pos], MaxSize - OutSize, BytesRead, CZ_NULL) = 0
       SELF.ZipApi.CloseFile(FileHandle)
       Self.Errors.SetError('ReadFileToBuffer: ReadFile Failed', CZ_ZIP_ERR_FILE_READ)
       RETURN CZ_ZIP_ERR_FILE_READ

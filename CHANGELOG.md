@@ -2,6 +2,26 @@
 
 All notable changes to the ZipTools project will be documented in this file.
 
+## [1.4.0] - 2025-10-03
+
+### Added
+- New bugs.md file for tracking bug reports and fixes
+- Added CZ_NULL constant to replace literal zeros for better code clarity
+- Added CZ_TRACEON equate in ZipEquates.inc to centralize debug control
+
+### Changed
+- Enhanced DLL loading mechanism for better compatibility with third-party tools
+- Improved InstallZipTools.bat with interactive prompts before overwriting existing zlib DLLs
+- Removed dependency on static library files (zlib1.lib and zlibwapi.lib) in favor of dynamic loading
+- Standardized debug handling via CZ_TRACEON instead of hardcoded czDebugOn flags
+- Improved code organization in ZipFileUtilitiesClass with better variable grouping
+
+### Fixed
+- Fixed bug with file metadata not being included when zipping single files
+- Fixed bug in ZipStringUtilsClass.GetFileExtension function
+- Enhanced path handling logic in ZipFileUtilitiesClass.CreateDirectoriesFromPath
+- Improved error handling in installation script
+
 ## [1.3.0] - 2025-09-24
 
 ### Changed

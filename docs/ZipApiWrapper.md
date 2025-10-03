@@ -26,17 +26,26 @@ Construct()
 
 ### `LoadLibs`
 
-Dynamically loads the zlib and zlibwapi DLLs and resolves all function pointers.
+Dynamically loads the zlib and zlibwapi DLLs and resolves all function pointers. This implementation ensures backward compatibility with third-party tools (specifically from CapeSoft) that ship with older versions of the zlib DLLs.
 
 ```clarion
 LoadLibs()
 ```
 
 This method:
-1. Attempts to load zlibwapi.dll
-2. Attempts to load zlib1.dll
-3. Resolves all function pointers for ZIP, UNZIP, and core zLib functions
-4. Returns LEVEL:Benign on success or LEVEL:Notify on failure
+1. Attempts to load zlibwapi.dll (required)
+2. Attempts to load zlib1.dll (optional, may not be available on older installations)
+3. Resolves all function pointers for ZIP and UNZIP functions from zlibwapi.dll
+4. Resolves core zLib functions (deflateInit2_, deflate, deflateEnd, crc32) with a fallback mechanism:
+   - First tries to load from zlib1.dll if available
+   - Falls back to zlibwapi.dll if zlib1.dll is not available or the function is not found
+5. Returns LEVEL:Benign on success or LEVEL:Notify on failure
+
+The implementation uses two helper methods:
+- `BindFunc`: Binds a function from a specific DLL
+- `BindCoreFunc`: Tries to bind a core zLib function from zlib1.dll first, then falls back to zlibwapi.dll
+
+This dynamic loading approach eliminates the need for static library files (zlib1.lib and zlibwapi.lib) and provides better compatibility with environments where different versions of the zlib DLLs might be present, such as when using CapeSoft tools alongside ZipTools.
 
 ### `Destruct`
 

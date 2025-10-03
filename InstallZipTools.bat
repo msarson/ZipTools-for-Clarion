@@ -1,4 +1,5 @@
 @echo off
+setlocal EnableDelayedExpansion
 REM ====================================================================
 REM InstallZipTools.bat - Installs ZipTools files to Clarion directories
 REM ====================================================================
@@ -14,7 +15,6 @@ if "%1"=="" (
 set ClarionPath=%1
 set BinPath=%ClarionPath%\Accessory\bin
 set LibsrcPath=%ClarionPath%\Accessory\Libsrc\win
-set LibPath=%ClarionPath%\Accessory\lib
 set TemplatePath=%ClarionPath%\Accessory\Template\win
 
 REM Verify directories exist
@@ -26,10 +26,7 @@ if not exist "%LibsrcPath%" (
     echo ERROR: Libsrc directory not found: %LibsrcPath%
     exit /b 1
 )
-if not exist "%LibPath%" (
-    echo ERROR: Lib directory not found: %LibPath%
-    exit /b 1
-)
+
 if not exist "%TemplatePath%" (
     echo ERROR: Template directory not found: %TemplatePath%
     exit /b 1
@@ -37,9 +34,37 @@ if not exist "%TemplatePath%" (
 
 echo Installing ZipTools to %ClarionPath%...
 
-REM Copy DLL files to Accessory\bin
-echo Copying DLL files to %BinPath%...
-copy /Y *.dll "%BinPath%" > nul
+REM Check if zlib DLLs already exist and prompt before overwriting
+echo Checking for existing zlib DLLs...
+
+if exist "%BinPath%\zlib1.dll" (
+    echo WARNING: zlib1.dll already exists in %BinPath%
+    set /p OVERWRITE_ZLIB1="Do you want to overwrite the existing zlib1.dll? This may affect compatibility with other tools. (Y/N): "
+    if /i "!OVERWRITE_ZLIB1!"=="Y" (
+        echo Copying zlib1.dll to %BinPath%...
+        copy /Y "zlib1.dll" "%BinPath%" > nul
+    ) else (
+        echo Skipping zlib1.dll installation.
+    )
+) else (
+    echo Copying zlib1.dll to %BinPath%...
+    copy /Y "zlib1.dll" "%BinPath%" > nul
+)
+
+if exist "%BinPath%\zlibwapi.dll" (
+    echo WARNING: zlibwapi.dll already exists in %BinPath%
+    set /p OVERWRITE_ZLIBWAPI="Do you want to overwrite the existing zlibwapi.dll? This may affect compatibility with other tools. (Y/N): "
+    if /i "!OVERWRITE_ZLIBWAPI!"=="Y" (
+        echo Copying zlibwapi.dll to %BinPath%...
+        copy /Y "zlibwapi.dll" "%BinPath%" > nul
+    ) else (
+        echo Skipping zlibwapi.dll installation.
+    )
+) else (
+    echo Copying zlibwapi.dll to %BinPath%...
+    copy /Y "zlibwapi.dll" "%BinPath%" > nul
+)
+
 
 REM Copy INC and CLW files to Accessory\Libsrc\win (excluding ZipClassTesting files)
 echo Copying INC and CLW files to %LibsrcPath%...
@@ -54,11 +79,6 @@ for %%F in (*.clw) do (
         copy /Y "%%F" "%LibsrcPath%" > nul
     )
 )
-
-REM Copy LIB files to Accessory\lib
-echo Copying LIB files to %LibPath%...
-copy /Y zlib1.lib "%LibPath%" > nul
-copy /Y zlibwapi.lib "%LibPath%" > nul
 
 REM Copy TPL file to Accessory\Template\win
 echo Copying TPL file to %TemplatePath%...

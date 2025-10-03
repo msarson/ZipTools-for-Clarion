@@ -17,7 +17,6 @@
   INCLUDE('ZipEquates.inc'),ONCE
 
 !====================================================================
-czDebugOn     EQUATE(1)
 
 !--------------------------------------------------------------------
 ! ZipErrorClass methods
@@ -115,7 +114,7 @@ ZipErrorClass.GetzError   PROCEDURE()
 !--------------------------------------------------------------------
 ZipErrorClass.TraceError PROCEDURE(<String prefix>)
   CODE
-  COMPILE('TraceOn',czDebugOn=1)
+  COMPILE('TraceOn',CZ_TRACEON=1)
   ! Output to debug
   IF NOT OMITTED(prefix) AND CLIP(prefix) <> ''
     ODS(CLIP(Prefix) & ' - ' & Self.GetErrorMessage() & ' (Code: ' & Self.zErrCode & ')')
@@ -130,6 +129,8 @@ ZipErrorClass.TraceError PROCEDURE(<String prefix>)
 ODS               PROCEDURE(STRING S)
 buf CSTRING(LEN(CLIP(S))+1)
   CODE
+  COMPILE('TraceOn',CZ_TRACEON=1)
   buf = CLIP(S)
   LOC_ODS(buf)
+  !TraceOn
   

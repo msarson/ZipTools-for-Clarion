@@ -351,7 +351,7 @@ ZipWorkerClass.ReadFileToBuffer    PROCEDURE(STRING FileName, *STRING BufRef, UL
 ZipWorkerClass.Trace   PROCEDURE(STRING pmsg)
 cmsg                CSTRING(LEN(CLIP(pmsg)) + 1)
   CODE
-  COMPILE('TraceOn',czDebugOn=1);
+  COMPILE('TraceOn',CZ_TRACEON=1);
   ! Only log if debug mode is on
   CMsg = pmsg
   SELF.ZipApi.ODS(CMsg)  

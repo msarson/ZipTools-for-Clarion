@@ -107,7 +107,7 @@ ext   STRING(32)
   CODE
   pos = INSTRING('.', fileName, -1, LEN(CLIP(fileName)))
   IF pos > 1
-    ext = SUB(CLIP(fileName), pos+1, LEN(CLIP(fileName)) - pos)
+    ext = SUB(fileName, pos+1, LEN(CLIP(fileName)) - pos)
     RETURN UPPER(ext)
   ELSE
     RETURN ''

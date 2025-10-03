@@ -83,6 +83,9 @@ ZipApiWrapper    CLASS(ZipErrorClass),TYPE,MODULE('ZipApiWrapper.clw'),LINK('Zip
 Construct               PROCEDURE()
 Destruct                PROCEDURE()
 LoadLibs                PROCEDURE(),LONG
+
+BindFunc PROCEDURE(*LONG fp, LONG hDll, STRING funcName, LONG curResult),LONG
+BindCoreFunc PROCEDURE(*LONG fp, LONG phZlib1, LONG phZlibWapi, STRING funcName, LONG curResult),LONG
 ! ZIP API (minizip-style functions from zlib for creating and manipulating ZIP files)
 zipOpen                 PROCEDURE(*CSTRING ZipFileName, LONG appendmode),LONG
 zipWriteInFileInZip     PROCEDURE(LONG zipHandle, LONG pBuf, ULONG len),LONG,PROC

@@ -120,8 +120,9 @@ ZipApiWrapper.Destruct    PROCEDURE()
   ! Nothing to clean up
 
 ZipApiWrapper.LoadLibs PROCEDURE()!,LONG
-cName   CSTRING(64)
-Result  LONG
+cName     CSTRING(64)
+Result    LONG
+
   CODE
   IF hZlibWapi = 0
     cName = 'zlibwapi.dll'
@@ -135,103 +136,81 @@ Result  LONG
   IF hZlib1 = 0
     cName = 'zlib1.dll'
     hZlib1 = cz_LoadLibrary(cName)
-    IF hZlib1 = 0
-      Self.Trace('LoadLibs: Failed to load ' & CLIP(cName))
-      RETURN LEVEL:Notify
-    END
+    ! may still be 0 on older ST installs
   END
 
   Result = LEVEL:Benign
 
-  ! ---------------- ZIP API (zlibwapi.dll)
-  cName = 'zipOpen'
-  fp_zipOpen = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_zipOpen = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
+  ! ---------------- ZIP API (minizip functions, always in zlibwapi.dll)
+  Result = Self.BindFunc(fp_zipOpen,                  hZlibWapi, 'zipOpen', Result)
+  Result = Self.BindFunc(fp_zipWriteInFileInZip,      hZlibWapi, 'zipWriteInFileInZip', Result)
+  Result = Self.BindFunc(fp_zipCloseFileInZipRaw,     hZlibWapi, 'zipCloseFileInZipRaw', Result)
+  Result = Self.BindFunc(fp_zipCloseFileInZip,        hZlibWapi, 'zipCloseFileInZip', Result)
+  Result = Self.BindFunc(fp_zipClose,                 hZlibWapi, 'zipClose', Result)
+  Result = Self.BindFunc(fp_zipOpenNewFileInZip,      hZlibWapi, 'zipOpenNewFileInZip', Result)
+  Result = Self.BindFunc(fp_zipOpenNewFileInZip2,     hZlibWapi, 'zipOpenNewFileInZip2', Result)
+  Result = Self.BindFunc(fp_zipOpenNewFileInZip3,     hZlibWapi, 'zipOpenNewFileInZip3', Result)
 
-  cName = 'zipWriteInFileInZip'
-  fp_zipWriteInFileInZip = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_zipWriteInFileInZip = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
+  ! ---------------- UNZIP API (minizip functions, always in zlibwapi.dll)
+  Result = Self.BindFunc(fp_unzOpen,                  hZlibWapi, 'unzOpen', Result)
+  Result = Self.BindFunc(fp_unzClose,                 hZlibWapi, 'unzClose', Result)
+  Result = Self.BindFunc(fp_unzGoToFirstFile,         hZlibWapi, 'unzGoToFirstFile', Result)
+  Result = Self.BindFunc(fp_unzGoToNextFile,          hZlibWapi, 'unzGoToNextFile', Result)
+  Result = Self.BindFunc(fp_unzOpenCurrentFilePassword,hZlibWapi,'unzOpenCurrentFilePassword', Result)
+  Result = Self.BindFunc(fp_unzGetCurrentFileInfo,    hZlibWapi, 'unzGetCurrentFileInfo', Result)
+  Result = Self.BindFunc(fp_unzOpenCurrentFile,       hZlibWapi, 'unzOpenCurrentFile', Result)
+  Result = Self.BindFunc(fp_unzReadCurrentFile,       hZlibWapi, 'unzReadCurrentFile', Result)
+  Result = Self.BindFunc(fp_unzCloseCurrentFile,      hZlibWapi, 'unzCloseCurrentFile', Result)
 
-  cName = 'zipCloseFileInZipRaw'
-  fp_zipCloseFileInZipRaw = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_zipCloseFileInZipRaw = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'zipCloseFileInZip'
-  fp_zipCloseFileInZip = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_zipCloseFileInZip = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'zipClose'
-  fp_zipClose = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_zipClose = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'zipOpenNewFileInZip'
-  fp_zipOpenNewFileInZip = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_zipOpenNewFileInZip = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'zipOpenNewFileInZip2'
-  fp_zipOpenNewFileInZip2 = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_zipOpenNewFileInZip2 = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'zipOpenNewFileInZip3'
-  fp_zipOpenNewFileInZip3 = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_zipOpenNewFileInZip3 = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  ! ---------------- UNZIP API (zlibwapi.dll)
-  cName = 'unzOpen'
-  fp_unzOpen = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_unzOpen = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'unzClose'
-  fp_unzClose = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_unzClose = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'unzGoToFirstFile'
-  fp_unzGoToFirstFile = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_unzGoToFirstFile = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'unzGoToNextFile'
-  fp_unzGoToNextFile = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_unzGoToNextFile = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'unzOpenCurrentFilePassword'
-  fp_unzOpenCurrentFilePassword = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_unzOpenCurrentFilePassword = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'unzGetCurrentFileInfo'
-  fp_unzGetCurrentFileInfo = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_unzGetCurrentFileInfo = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'unzOpenCurrentFile'
-  fp_unzOpenCurrentFile = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_unzOpenCurrentFile = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'unzReadCurrentFile'
-  fp_unzReadCurrentFile = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_unzReadCurrentFile = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'unzCloseCurrentFile'
-  fp_unzCloseCurrentFile = cz_GetProcAddress(hZlibWapi, cName)
-  IF fp_unzCloseCurrentFile = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  ! ---------------- CORE ZLIB API (zlib1.dll)
-  cName = 'deflateInit2_'
-  fp_deflateInit2_ = cz_GetProcAddress(hZlib1, cName)
-  IF fp_deflateInit2_ = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'deflate'
-  fp_deflate = cz_GetProcAddress(hZlib1, cName)
-  IF fp_deflate = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'deflateEnd'
-  fp_deflateEnd = cz_GetProcAddress(hZlib1, cName)
-  IF fp_deflateEnd = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
-
-  cName = 'crc32'
-  fp_crc32 = cz_GetProcAddress(hZlib1, cName)
-  IF fp_crc32 = 0 ; Self.Trace('Failed ' & CLIP(cName)) ; Result = LEVEL:Notify; END
+  ! ---------------- CORE ZLIB API (prefer zlib1.dll, fallback to zlibwapi.dll)
+  Result = Self.BindCoreFunc(fp_deflateInit2_, hZlib1, hZlibWapi, 'deflateInit2_', Result)
+  Result = Self.BindCoreFunc(fp_deflate,       hZlib1, hZlibWapi, 'deflate',       Result)
+  Result = Self.BindCoreFunc(fp_deflateEnd,    hZlib1, hZlibWapi, 'deflateEnd',    Result)
+  Result = Self.BindCoreFunc(fp_crc32,         hZlib1, hZlibWapi, 'crc32',         Result)
 
   RETURN Result
 
+
+!-------------------------------
+! Helper: bind function from one DLL
+!-------------------------------
+ZipApiWrapper.BindFunc    PROCEDURE(*LONG fp, LONG hDll, STRING funcName, LONG curResult)!,LONG
+fnName CSTRING(LEN(CLIP(funcName))+1)
+  CODE 
+  fnName = funcName  
+  fp = cz_GetProcAddress(hDll, fnName)
+  IF fp = 0
+    Self.Trace('Failed ' & CLIP(funcName))
+    RETURN LEVEL:Notify
+  END
+  RETURN curResult
+
+
+!-------------------------------
+! Helper: bind core zlib function (zlib1 first, then fallback to zlibwapi)
+!-------------------------------
+ZipApiWrapper.BindCoreFunc    PROCEDURE(*LONG fp, LONG phZlib1, LONG phZlibWapi, STRING funcName, LONG curResult)!,LONG
+fnName CSTRING(LEN(CLIP(funcName))+1)
+  CODE
+  fnName = funcName  
+  fp = 0
+  IF hZlib1 <> 0
+    fp = cz_GetProcAddress(phZlib1, fnName)
+    IF fp <> 0
+      Self.Trace('Loaded ' & CLIP(funcName) & ' from zlib1.dll')
+    END
+  END
+  IF fp = 0 AND hZlibWapi <> 0
+    fp = cz_GetProcAddress(phZlibWapi, fnName)
+    IF fp <> 0
+      Self.Trace('Loaded ' & CLIP(funcName) & ' from zlibwapi.dll (fallback)')
+    END
+  END
+  IF fp = 0
+    Self.Trace('Failed ' & CLIP(funcName))
+    RETURN LEVEL:Notify
+  END
+  RETURN curResult
 
 ZipApiWrapper.zipOpen PROCEDURE(*CSTRING ZipFileName, LONG appendmode)
   CODE
@@ -283,11 +262,11 @@ globPtr                             LONG
 cmtPtr                              LONG
 RetValue                            LONG
   CODE
-  fnPtr  = CHOOSE(LEN(CLIP(filename))=0, 0, ADDRESS(filename))
+  fnPtr  = CHOOSE(LEN(CLIP(filename))=0, CZ_NULL, ADDRESS(filename))
   zfPtr  = ADDRESS(zipfi)
-  locPtr = CHOOSE(LEN(CLIP(extrafield_local))=0, 0, ADDRESS(extrafield_local))
-  globPtr= CHOOSE(LEN(CLIP(extrafield_global))=0, 0, ADDRESS(extrafield_global))
-  cmtPtr = CHOOSE(LEN(CLIP(comment))=0, 0, ADDRESS(comment))
+  locPtr = CHOOSE(LEN(CLIP(extrafield_local))=0, CZ_NULL, ADDRESS(extrafield_local))
+  globPtr= CHOOSE(LEN(CLIP(extrafield_global))=0, CZ_NULL, ADDRESS(extrafield_global))
+  cmtPtr = CHOOSE(LEN(CLIP(comment))=0, CZ_NULL, ADDRESS(comment))
   
   RetValue = cz_zipOpenNewFileInZip(zipFile, fnPtr, zfPtr, locPtr, size_extrafield_local, globPtr, size_extrafield_global, cmtPtr, method, level)
   
@@ -319,11 +298,11 @@ globPtr                                 LONG
 cmtPtr                                  LONG
 RetValue                                LONG
   CODE
-  fnPtr  = CHOOSE(LEN(CLIP(filename))=0, 0, ADDRESS(filename))
+  fnPtr  = CHOOSE(LEN(CLIP(filename))=0, CZ_NULL, ADDRESS(filename))
   zfPtr  = ADDRESS(zipfi)
-  locPtr = CHOOSE(LEN(CLIP(extrafield_local))=0, 0, ADDRESS(extrafield_local))
-  globPtr= CHOOSE(LEN(CLIP(extrafield_global))=0, 0, ADDRESS(extrafield_global))
-  cmtPtr = CHOOSE(LEN(CLIP(comment))=0, 0, ADDRESS(comment))
+  locPtr = CHOOSE(LEN(CLIP(extrafield_local))=0, CZ_NULL, ADDRESS(extrafield_local))
+  globPtr= CHOOSE(LEN(CLIP(extrafield_global))=0, CZ_NULL, ADDRESS(extrafield_global))
+  cmtPtr = CHOOSE(LEN(CLIP(comment))=0, CZ_NULL, ADDRESS(comment))
   
   RetValue = cz_zipOpenNewFileInZip2( |
     zipFile, fnPtr, zfPtr, |
@@ -370,13 +349,13 @@ RetValue                                LONG
   END
   
   
-  fnPtr  = CHOOSE(LEN(CLIP(filename))=0, 0, ADDRESS(filename))
+  fnPtr  = CHOOSE(LEN(CLIP(filename))=0, CZ_NULL, ADDRESS(filename))
   zfPtr  = ADDRESS(zipfi)
- 
-  locPtr = CHOOSE(LEN(CLIP(extrafield_local))=0, 0, ADDRESS(extrafield_local))
-  globPtr= CHOOSE(LEN(CLIP(extrafield_global))=0, 0, ADDRESS(extrafield_global))
-  cmtPtr = CHOOSE(LEN(CLIP(comment))=0, 0, ADDRESS(comment))
-  pwdPtr = CHOOSE(LEN(CLIP(password))=0, 0, ADDRESS(password))
+
+  locPtr = CHOOSE(LEN(CLIP(extrafield_local))=0, CZ_NULL, ADDRESS(extrafield_local))
+  globPtr= CHOOSE(LEN(CLIP(extrafield_global))=0, CZ_NULL, ADDRESS(extrafield_global))
+  cmtPtr = CHOOSE(LEN(CLIP(comment))=0, CZ_NULL, ADDRESS(comment))
+  pwdPtr = CHOOSE(LEN(CLIP(password))=0, CZ_NULL, ADDRESS(password))
   
   RetValue = cz_zipOpenNewFileInZip3(zipFile, fnPtr, zfPtr, |
     locPtr, size_extrafield_local, globPtr, size_extrafield_global, |
@@ -431,7 +410,7 @@ RetValue                                    LONG
   SELF.Trace('unzOpenCurrentFilePassword: Password length = ' & LEN(CLIP(password)))
   
   ! Use NULL pointer if password is empty, otherwise use address of password
-  pwdPtr = CHOOSE(LEN(CLIP(password))=0, 0, ADDRESS(password))
+  pwdPtr = CHOOSE(LEN(CLIP(password))=0, CZ_NULL, ADDRESS(password))
   
   ! Log the password pointer for debugging
   SELF.Trace('unzOpenCurrentFilePassword: Password pointer = ' & pwdPtr)
@@ -541,7 +520,7 @@ ZipApiWrapper.GetLastError    PROCEDURE()
 
 ZipApiWrapper.CreateDirectory PROCEDURE(*CSTRING lpPathName)
   CODE
-  RETURN cz_CreateDirectory(ADDRESS(lpPathName), 0)
+  RETURN cz_CreateDirectory(ADDRESS(lpPathName), CZ_NULL)
 
 ZipApiWrapper.DeleteFile  PROCEDURE(*CSTRING lpFileName)
   CODE
@@ -591,5 +570,7 @@ ZipApiWrapper.Trace   PROCEDURE(STRING pmsg)
 cmsg                    CSTRING(LEN(CLIP(pmsg)) + 1)
   CODE
   ! Only log if debug mode is on
+  COMPILE('TraceOn',CZ_TRACEON=1)
   CMsg = pmsg
   SELF.ODS(CMsg)  
+  !TraceOn

@@ -15,7 +15,6 @@
   INCLUDE('ZipToolsClass.inc'),ONCE
 
 !====================================================================
-czDebugOn     EQUATE(1)  ! Enable debug tracing to help diagnose issues
 
 !--------------------------------------------------------------------
 ! ZipReaderClass methods
@@ -131,7 +130,7 @@ Window            WINDOW('Extracting Files'),AT(,,218,72),CENTER,GRAY,FONT('Sego
         END
 
         CLEAR(FileInfo)
-        Result = SELF.ZipApi.unzGetCurrentFileInfo(unzFH, FileInfo, FileName, SIZE(FileName), 0, 0, 0, 0)
+        Result = SELF.ZipApi.unzGetCurrentFileInfo(unzFH, FileInfo, FileName, SIZE(FileName), CZ_NULL, CZ_NULL, CZ_NULL, CZ_NULL)
         IF Result = CZ_Z_OK
           IF FileName
             FilePath = OutputDir & FileName
@@ -174,7 +173,7 @@ Window            WINDOW('Extracting Files'),AT(,,218,72),CENTER,GRAY,FONT('Sego
               FileOpened = CHOOSE(Result = CZ_Z_OK,1,0)
 
               IF FileOpened
-                FileHandle = SELF.ZipApi.CreateFile(FilePath, CZ_GENERIC_WRITE, 0,,CZ_CREATE_ALWAYS, CZ_FILE_ATTRIBUTE_NORMAL, 0)
+                FileHandle = SELF.ZipApi.CreateFile(FilePath, CZ_GENERIC_WRITE, 0,,CZ_CREATE_ALWAYS, CZ_FILE_ATTRIBUTE_NORMAL, CZ_NULL)
                 IF FileHandle <> CZ_INVALID_HANDLE_VALUE
                   Self.Trace('ExtractZipFile: Writing to [' & CLIP(FilePath) & ']')
                   LOOP
@@ -322,7 +321,7 @@ FileHandle                  LONG
     Self.Errors.SetError('GetZipTotalSize: Failed to open ZIP file: [' & csZipName & ']',CZ_ZIP_ERR_FILE_OPEN)
    
    ! Check if the file exists
-    FileHandle = SELF.ZipApi.CreateFile(csZipName, CZ_GENERIC_READ, CZ_FILE_SHARE_READ,,CZ_OPEN_EXISTING, 0, 0)
+    FileHandle = SELF.ZipApi.CreateFile(csZipName, CZ_GENERIC_READ, CZ_FILE_SHARE_READ,,CZ_OPEN_EXISTING, 0, CZ_NULL)
     IF FileHandle = CZ_INVALID_HANDLE_VALUE
        Self.Errors.SetError('GetZipTotalSize: ZIP file does not exist or cannot be accessed: [' & csZipName & ']', FileHandle) 
     ELSE
@@ -340,7 +339,7 @@ FileHandle                  LONG
  ! Loop through all files in the ZIP
   LOOP WHILE Result = CZ_Z_OK
    ! Get the current file info
-    IF SELF.ZipApi.unzGetCurrentFileInfo(unzFH, FileInfo, FileName, SIZE(FileName), 0, 0, 0, 0) <> CZ_Z_OK
+    IF SELF.ZipApi.unzGetCurrentFileInfo(unzFH, FileInfo, FileName, SIZE(FileName), CZ_NULL, CZ_NULL, CZ_NULL, CZ_NULL) <> CZ_Z_OK
       Self.Errors.SetError('GetZipTotalSize: Error getting file info',CZ_ZIP_ERR_EXTRACT)
       BREAK
     END
@@ -416,7 +415,7 @@ FileInfo  LIKE(UnzipFileInfoType)
     Self.Errors.SetError('GetZipFileCount: Failed to open ZIP file: [' & csZipName & ']',CZ_ZIP_ERR_FILE_OPEN)
    
    ! Check if the file exists
-    FileHandle = SELF.ZipApi.CreateFile(csZipName, CZ_GENERIC_READ, CZ_FILE_SHARE_READ,,CZ_OPEN_EXISTING, 0, 0)
+    FileHandle = SELF.ZipApi.CreateFile(csZipName, CZ_GENERIC_READ, CZ_FILE_SHARE_READ,,CZ_OPEN_EXISTING, 0, CZ_NULL)
     IF FileHandle = CZ_INVALID_HANDLE_VALUE
        Self.Errors.SetError('GetZipFileCount: ZIP file does not exist or cannot be accessed: [' & csZipName & ']', CZ_INVALID_HANDLE_VALUE)
     ELSE
@@ -434,7 +433,7 @@ FileInfo  LIKE(UnzipFileInfoType)
  ! Loop through all files in the ZIP
   LOOP WHILE Result = CZ_Z_OK
    ! Get the current file info
-    IF SELF.ZipApi.unzGetCurrentFileInfo(unzFH, FileInfo, FileName, SIZE(FileName), 0, 0, 0, 0) <> CZ_Z_OK
+    IF SELF.ZipApi.unzGetCurrentFileInfo(unzFH, FileInfo, FileName, SIZE(FileName), CZ_NULL, CZ_NULL, CZ_NULL, CZ_NULL) <> CZ_Z_OK
       Self.Errors.SetError('GetZipFileCount: Error getting file info', CZ_ZIP_ERR_EXTRACT)
       BREAK
     END
@@ -521,7 +520,7 @@ TimeWord                      USHORT   ! lower 16 bits
     Self.Errors.SetError('GetZipContents: Failed to open ZIP file: [' & csZipName & ']' , CZ_ZIP_ERR_FILE_OPEN)
    
    ! Check if the file exists
-    FileHandle = SELF.ZipApi.CreateFile(csZipName, CZ_GENERIC_READ, CZ_FILE_SHARE_READ,,CZ_OPEN_EXISTING, 0, 0)
+    FileHandle = SELF.ZipApi.CreateFile(csZipName, CZ_GENERIC_READ, CZ_FILE_SHARE_READ,,CZ_OPEN_EXISTING, 0, CZ_NULL)
     IF FileHandle = CZ_INVALID_HANDLE_VALUE
        Self.Trace('GetZipContents: ZIP file does not exist or cannot be accessed: [' & csZipName & '] (Error: ' & SELF.ZipApi.GetLastError() & ')') 
     ELSE
@@ -540,7 +539,7 @@ TimeWord                      USHORT   ! lower 16 bits
  ! Loop through all files in the ZIP
   LOOP WHILE Result = CZ_Z_OK
    ! Get the current file info
-    IF SELF.ZipApi.unzGetCurrentFileInfo(unzFH, FileInfo, FileName, SIZE(FileName), 0, 0, 0, 0) <> CZ_Z_OK
+    IF SELF.ZipApi.unzGetCurrentFileInfo(unzFH, FileInfo, FileName, SIZE(FileName), CZ_NULL, CZ_NULL, CZ_NULL, CZ_NULL) <> CZ_Z_OK
       Self.Errors.SetError('GetZipContents: Error getting file info', CZ_ZIP_ERR_EXTRACT)
       BREAK
     END
@@ -600,7 +599,7 @@ ZipReaderClass.Trace   PROCEDURE(STRING pmsg)
 cmsg                CSTRING(LEN(CLIP(pmsg)) + 1)
   CODE
   ! Only log if debug mode is on
-  COMPILE('TraceOn',czDebugOn=1); 
+  COMPILE('TraceOn',CZ_TRACEON=1); 
     CMsg = pmsg
     SELF.ZipApi.ODS(CMsg)
   !TraceOn

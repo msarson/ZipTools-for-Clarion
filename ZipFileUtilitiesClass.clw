@@ -55,11 +55,11 @@ CurrentPath                     CSTRING(File:MaxFilePath + 1)  ! To store curren
         DIRECTORY(aFILE:queue, FileQueue.ZipFileName, ff_:NORMAL+ff_:HIDDEN+ff_:SYSTEM+ff_:DIRECTORY)
         GET(aFILE:queue, 1)
         
-        IF FileQueue.ZipFileName = CLIP(aFILE:queue.name)
-          FileQueue.ZipFileDate       = aFILE:queue.date
-          FileQueue.ZipFileTime       = aFILE:queue.time
-          FileQueue.uncompressed_size = aFILE:queue.size
-        END
+        ! Always set file metadata for multi-file selection
+        ! The original condition was comparing full path with just filename
+        FileQueue.ZipFileDate       = aFILE:queue.date
+        FileQueue.ZipFileTime       = aFILE:queue.time
+        FileQueue.uncompressed_size = aFILE:queue.size
         
         FileQueue.compressed_size = 0
         CLEAR(FileQueue.crc)
@@ -73,11 +73,11 @@ CurrentPath                     CSTRING(File:MaxFilePath + 1)  ! To store curren
       DIRECTORY(aFILE:queue, Found, ff_:NORMAL+ff_:HIDDEN+ff_:SYSTEM+ff_:DIRECTORY)
       GET(aFILE:queue, 1)
       
-      IF FileQueue.ZipFileName = CLIP(aFILE:queue.name)
-        FileQueue.ZipFileDate       = aFILE:queue.date
-        FileQueue.ZipFileTime       = aFILE:queue.time
-        FileQueue.uncompressed_size = aFILE:queue.size
-      END
+      ! Always set file metadata for single file selection
+      ! The original condition was comparing full path with just filename
+      FileQueue.ZipFileDate       = aFILE:queue.date
+      FileQueue.ZipFileTime       = aFILE:queue.time
+      FileQueue.uncompressed_size = aFILE:queue.size
       
       FileQueue.IsFolder = 0  ! This is a file
       ADD(FileQueue)
@@ -317,19 +317,24 @@ ZipFileUtilitiesClass.GetFileExtension   PROCEDURE(STRING FileName)
 ! Returns:
 !   TRUE if successful, FALSE if failed
 !--------------------------------------------------------------------
-ZipFileUtilitiesClass.CreateDirectoriesFromPath   PROCEDURE(STRING DirectoryPath)
-CurrentPath                         CSTRING(FILE:MaxFilePath+1)
-NextSlash                           LONG
-i                                   LONG
-LastError                           LONG
-Success                             BOOL(TRUE)
-TempPath                            CSTRING(FILE:MaxFilePath+1)
-RetryCount                          LONG(0)
-MaxRetries                          LONG(3)
-DirectoryPathCString                CSTRING(FILE:MaxFilePath+1)
-CleanPath                           STRING(FILE:MaxFilePath)
-CheckPath                           STRING(FILE:MaxFilePath)
-Pos                            LONG
+ZipFileUtilitiesClass.CreateDirectoriesFromPath PROCEDURE(STRING DirectoryPath)
+  ! Path variables
+CleanPath                                         STRING(FILE:MaxFilePath)
+DirectoryPathCString                              CSTRING(FILE:MaxFilePath+1)
+TempPath                                          CSTRING(FILE:MaxFilePath+1)
+CurrentPath                                       CSTRING(FILE:MaxFilePath+1)
+
+  ! Iterators
+Pos                                               LONG
+i                                                 LONG
+NextSlash                                         LONG
+
+  ! Retry/error state
+RetryCount                                        LONG
+MaxRetries                                        LONG(3)
+LastError                                         LONG
+Success                                           BOOL(TRUE)
+  CODE
    
   ! If path is empty, return success
   IF ~DirectoryPath
@@ -341,14 +346,10 @@ Pos                            LONG
   CleanPath = DirectoryPath
 
   ! Find last backslash
-  Pos = INSTRING('\', DirectoryPath, -1, LEN(CLIP(DirectoryPath)))
-  IF Pos > 0
-    ! Substring after the last backslash
-    CheckPath = SUB(CLIP(DirectoryPath), Pos+1, LEN(CLIP(DirectoryPath))-Pos)
-    ! Does it contain a dot?
-    IF INSTRING('.', CheckPath, 1, 1) > 0
-      CleanPath = SELF.PathOnly(DirectoryPath)
-    END
+  IF SELF.StringUtils.GetFileExtension(DirectoryPath) <> ''
+    CleanPath = SELF.PathOnly(DirectoryPath)
+  ELSE
+    CleanPath = DirectoryPath
   END
   
   ! If PathOnly returned empty but original path wasn't empty,

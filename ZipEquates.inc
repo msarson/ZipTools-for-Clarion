@@ -144,3 +144,6 @@ UZ_OVERWRITE_FAIL        EQUATE(1)  ! Skip file if it exists
 UZ_OVERWRITE_SILENT      EQUATE(2)  ! Overwrite existing files without asking
 
 CZ_END_OF_LIST  EQUATE(-100)
+
+CZ_NULL       EQUATE(0)
+CZ_TRACEON    EQUATE(1)

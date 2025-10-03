@@ -110,7 +110,7 @@ Trace(STRING Message)
 **Parameters:**
 - `Message`: Debug message to write
 
-**Note:** Debug messages are only output when the czDebugOn equate is set to 1
+**Note:** Debug messages are only output when the CZ_TRACEON equate is set to 1 in ZipEquates.inc
 
 ## Configuration Properties
 

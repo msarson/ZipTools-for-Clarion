@@ -1,4 +1,4 @@
-#Template(ZipTools,'Zip Tools - Version 1.00'),Family('cw20'),Family('abc')
+#Template(ZipTools,'Zip Tools - Version 1.40'),Family('cw20'),Family('abc')
 #!-----------------------------------------------------------------------------!
 #!                                                                             !
 #! ZipTools for Clarion                                                        !
@@ -30,10 +30,10 @@
 #!-----------------------------------------------------------------------------!
 
 #SYSTEM
-  #EQUATE(%ZipToolsTPLVersion,'1.00')
+  #EQUATE(%ZipToolsTPLVersion,'1.40')
 #!-----------------------------------------------------------------------------!
 
-#Extension(Activate_ZipTools,'Activate ZipTools - Version:1.00'),Application
+#Extension(Activate_ZipTools,'Activate ZipTools - Version:1.40'),Application
   #sheet
     #TAB('General')
       #BOXED

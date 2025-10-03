@@ -33,9 +33,6 @@
   <ItemGroup>
     <Compile Include="ZipClassTesting.clw" />
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="ZLib1.lib" />
-    <Library Include="zlibwapi.lib" />
-  </ItemGroup>
+  <!-- Library files are no longer needed as DLLs are dynamically loaded at runtime -->
   <Import Project="$(ClarionBinPath)\SoftVelocity.Build.Clarion.targets" />
 </Project>
