@@ -1,5 +1,3 @@
-
-
           PROGRAM
           MAP
             WindowsZipTest()
@@ -22,7 +20,6 @@
 !!! Window
 !!! </summary>
 WindowsZipTest    PROCEDURE 
-
 
 
 
@@ -124,6 +121,7 @@ QuickWindow         WINDOW('ZIP Test Interface'),AT(,,500,420),CENTER,GRAY,IMM,A
 
 
   CODE
+    
   OPEN(QuickWindow)
   ACCEPT
     CASE ACCEPTED()

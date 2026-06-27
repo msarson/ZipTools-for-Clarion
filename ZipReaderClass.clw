@@ -155,7 +155,10 @@ Window            WINDOW('Extracting Files'),AT(,,218,72),CENTER,GRAY,FONT('Sego
 
               ! Handle encrypted files
               IF BAND(FileInfo.flag,1) <> 0
-                IF ~Self.UnzipOptions.Password
+                ! Explicit empty-string test - clearer than '~Password' and
+                ! consistent with the rest of the code. No CLIP needed -
+                ! comparing a string to '' already ignores trailing blanks.
+                IF Self.UnzipOptions.Password = ''
                   Self.Errors.SetError('ExtractZipFile: Encrypted file, no password provided [' & CLIP(FileName) & ']', CZ_ZIP_ERR_INVALID_PARAMETER)
                   ClosingWindow = 1
                   POST(EVENT:CloseWindow)

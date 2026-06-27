@@ -211,11 +211,17 @@ Result                   LONG
   
   ! Perform extraction through Reader class
   Result = Self.Reader.ExtractZipFile(Options)
-  
+
+  ! The Reader records errors on its OWN ZipErrorClass instance. Surface it on
+  ! the main class so the caller's GetErrorCode()/GetErrorMessage() report the
+  ! real cause instead of a stale (or zero "Success") code. SetError with
+  ! CZ_Z_OK simply clears it on a clean extraction.
+  Self.Errors.SetError('ExtractZipFile', Self.Reader.Errors.GetErrorCode())
+
   ! Log extraction completion
   Self.Trace('ExtractZipFile: Completed extraction from ' & Options.ZipName & ' to ' & Options.OutputFolder)
   Self.Trace('ExtractZipFile: Result = ' & Result)
-  
+
   ! Return the error code from the error handler
   RETURN Self.Errors.GetErrorCode()
   
@@ -272,6 +278,9 @@ Window                      WINDOW('Zipping Files'),AT(,,218,72),CENTER,GRAY,FON
                             END
 TotalFileSize               ULONG 
   CODE
+  ! Clear any error left over from a previous operation so GetErrorCode()
+  ! reflects only this run.
+  Self.Errors.SetError('CreateZipFile: Start', CZ_Z_OK)
   Self.Options = Options
   IF Self.Options.Threads < 1
     ThreadCount = 1
@@ -328,6 +337,7 @@ TotalFileSize               ULONG
   
   zipFH = SELF.ZipApi.zipOpen(FileToZip, CZ_ZIP_APPEND_STATUS_CREATE)
   IF zipFH <= 0
+    Self.Errors.SetError('CreateZipFile: zipOpen failed', CZ_ZIP_ERR_CREATE)
     MESSAGE('Failed to create zip file: ' & Options.ZipName, 'Error')
     RETURN 1
   END
@@ -335,6 +345,7 @@ TotalFileSize               ULONG
   ! Setup Mutex
   ZipMutex &= NewMutex()
   IF ZipMutex &= NULL
+    Self.Errors.SetError('CreateZipFile: NewMutex failed', CZ_ZIP_INTERNALERROR)
     MESSAGE('Failed to create mutex', 'Error')
     RETURN 1
   END
@@ -463,6 +474,23 @@ TotalFileSize               ULONG
 
   CLOSE(Window)
 
+  ! Each worker records errors on its OWN ZipErrorClass instance, which is
+  ! disposed with the worker. Surface the first worker error on the main class
+  ! BEFORE disposing the thread data, so the caller's GetErrorCode()/
+  ! GetErrorMessage() report the real cause (e.g. a file still open for output
+  ! -> CZ_ZIP_ERR_FILE_OPEN) instead of leaving the code at 0 (Success).
+  IF Self.Errors.GetErrorCode() = CZ_Z_OK
+    LOOP i = 1 TO ThreadCount
+      td &= GetThreadData(i)
+      IF NOT td &= NULL AND NOT td.Errors &= NULL
+        IF td.Errors.GetErrorCode() <> CZ_Z_OK
+          Self.Errors.SetError('CreateZipFile: Worker thread ' & i, td.Errors.GetErrorCode())
+          BREAK
+        END
+      END
+    END
+  END
+
   DisposeAllThreadData()
 
   ! Clean up
@@ -472,7 +500,15 @@ TotalFileSize               ULONG
   END
 
   SELF.ZipApi.zipClose(zipFH, Self.Comment)
-  Self.Trace('CreateZipFile: End') 
+
+  ! Final safety net: if errors were counted (e.g. a worker thread failed to
+  ! start) but no specific error code was captured, set a generic one so a
+  ! non-zero return is never paired with an error code of 0 (Success).
+  IF ErrorCount > 0 AND Self.Errors.GetErrorCode() = CZ_Z_OK
+    Self.Errors.SetError('CreateZipFile: Completed with errors', CZ_ZIP_ERR_CREATE)
+  END
+
+  Self.Trace('CreateZipFile: End')
   RETURN ErrorCount
   
 

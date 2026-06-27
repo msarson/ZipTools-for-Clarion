@@ -116,7 +116,7 @@ ZipErrorClass.TraceError PROCEDURE(<String prefix>)
   CODE
   COMPILE('TraceOn',CZ_TRACEON=1)
   ! Output to debug
-  IF NOT OMITTED(prefix) AND CLIP(prefix) <> ''
+  IF NOT OMITTED(prefix) AND prefix <> ''
     ODS(CLIP(Prefix) & ' - ' & Self.GetErrorMessage() & ' (Code: ' & Self.zErrCode & ')')
   ELSE
     ODS(CLIP(Self.GetErrorMessage()) & ' - ' & Self.GetErrorMessage() & ' (Code: ' & Self.zErrCode & ')')

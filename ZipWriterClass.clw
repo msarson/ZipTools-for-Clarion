@@ -86,7 +86,11 @@ Strategy      LONG                   ! Added for compression parameters
     MethodToUse = CZ_Z_DEFLATED
   END
 
-  HasPassword = CHOOSE(Self.Options.Password, TRUE, FALSE)
+  ! Test for a non-empty password explicitly. CHOOSE can treat its first
+  ! argument as an arithmetic expression, so passing the raw string is
+  ! ambiguous; 'Password <> ''' yields a clean logical result. No CLIP needed -
+  ! comparing a string to '' already ignores trailing blanks.
+  HasPassword = CHOOSE(Self.Options.Password <> '', TRUE, FALSE)
 
   !===============================================================
   ! Original file path is no longer required since we're using the buffer directly
